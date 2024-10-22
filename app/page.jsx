@@ -1,22 +1,26 @@
-import { Box, Container, Paper } from "@mui/material";
+import { Box, Container, Paper, Typography } from "@mui/material";
 
 
 export default function Home() {
   return (
     <Container maxWidth="xl" disableGutters>
       <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
-        initial box
       </Box>
       <Paper
         sx={{
           padding: 2,
           borderRadius: 2,
           maxWidth: "80%",
-          margin: "0 auto",
+          margin: "auto",
           height: "400px",
+          alignContent: 'center',
+          justifyContent: 'center',
+          mb: 10
         }}
       >
-        this is paper
+        <Typography variant="h3" width={'100%'}>
+          This is the home page
+        </Typography>
       </Paper>
       </Container>
   );

@@ -8,8 +8,7 @@ import { useState } from "react";
 
 export default function AppbarGlobal() {
   const navItems = [
-    { label: "About us", href: "/" },
-    { label: "Pricing", href: "/pricing" },
+    { label: "About us", href: "/about-us" },
     { label: "Q&A", href: "/qa" },
   ];
   const loginNavItems = [
@@ -27,14 +26,14 @@ export default function AppbarGlobal() {
   return (
     <AppBar position='sticky' sx={{ mb: 4}}>
       <Toolbar>
-        <Image
+        {/* <Image
             src="/logo.png"
             alt="Our Logo"
             height={40}
             width={40}
             priority
             
-        />
+        /> */}
         <Typography
           variant="h5"
           noWrap

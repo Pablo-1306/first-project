@@ -15,13 +15,13 @@ export default function FooterGlobal() {
           <Grid container spacing={30} width={'90%'} ml={'auto'} mr={'auto'}>
                 <Grid size={{ xs: 12, sm: 6, md: 2 }} sx={{ mb: 4, mt:4, display:'flex'}}>
                     <Box sx={{display:'flex'}}>
-                        <Image
+                        {/* <Image
                             src="/logo.png"
                             alt="Our Logo"
                             height={40}
                             width={40}
                             priority
-                        />
+                        /> */}
                         <Typography
                         variant="h5"
                         noWrap
@@ -77,14 +77,6 @@ export default function FooterGlobal() {
                             Comunnity Q&A
                         </Typography>
                         </Box>
-                        <Typography
-                        variant="h7"
-                        color="black"
-                        component={Link}
-                        href="/pricing"
-                        >
-                            Pricing
-                        </Typography>
                     </Box>
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6, md: 2 }} sx={{ mb: 4,mt:4, display:'flex' }}>

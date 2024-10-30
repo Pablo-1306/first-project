@@ -27,6 +27,6 @@ export const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: "Arial, sans-serif",
+    fontFamily: "Space Mono, monospace",
   },
 });

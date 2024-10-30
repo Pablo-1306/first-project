@@ -26,14 +26,6 @@ export default function AppbarGlobal() {
   return (
     <AppBar position='sticky' sx={{ mb: 4}}>
       <Toolbar>
-        {/* <Image
-            src="/logo.png"
-            alt="Our Logo"
-            height={40}
-            width={40}
-            priority
-            
-        /> */}
         <Typography
           variant="h5"
           noWrap
@@ -41,7 +33,7 @@ export default function AppbarGlobal() {
           href="/"
           sx={{
             display: { xs: "none", md: "flex" },
-            fontFamily: "monospace",
+            fontFamily: "Grenze Gotisch",
             fontWeight: 700,
             letterSpacing: ".05rem",
             color: "inherit",

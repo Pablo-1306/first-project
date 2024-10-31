@@ -27,7 +27,7 @@ export default function FooterGlobal() {
                         noWrap
                         sx={{
                             display: { xs: "none", md: "flex" },
-                            fontFamily: "monospace",
+                            fontFamily: "Grenze Gotisch",
                             fontWeight: 700,
                             letterSpacing: ".05rem",
                             color: theme.palette.primary.main,

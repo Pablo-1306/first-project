@@ -1,7 +1,6 @@
 "use client"
 import { AppBar, Box, Button, Paper, Toolbar, Typography } from "@mui/material";
 import Link from "next/link";
-import Image from "next/image";
 import { theme } from "../styles/global-theme";
 import BookDialog from "./dialog";
 import { useState } from "react";
@@ -15,7 +14,7 @@ export default function AppbarGlobal() {
     { label: "Q&A", href: "/qa" },
   ];
   const loginNavItems = [
-    { label: "Account", bc_color:'white', icon: <PersonIcon/>},
+    { label: "Account", bc_color:theme.palette.secondary.main, icon: <PersonIcon/>},
   ];
   const AccountOptions = [
     {label: 'Sign In', icon: <PersonIcon sx={{width:'100px', height:'100px'}}/>, href: "/qa"},
@@ -31,7 +30,6 @@ export default function AppbarGlobal() {
     p: 4,
     textAlign: "center",
     "&:hover": {
-    backgroundColor: theme.palette.lighter.main,
     transform: "scale(1.05)",
     transition: "transform 0.4s ease-in-out",
     boxShadow: "0 10px 20px rgba(0, 0, 0, 0.2)",
@@ -40,10 +38,10 @@ export default function AppbarGlobal() {
   const button_conf = { 
     mt:3, 
     backgroundColor: theme.palette.primary.main, 
-    color: 'white', 
+    color: 'grey', 
     borderRadius: 2, 
     "&:hover": {
-        backgroundColor: 'white',
+        backgroundColor: theme.palette.secondary.main,
         color: theme.palette.primary.main
     }
   }

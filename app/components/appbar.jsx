@@ -24,7 +24,7 @@ export default function AppbarGlobal() {
   }
 
   return (
-    <AppBar position='sticky' sx={{ mb: 4}}>
+    <AppBar position='sticky' sx={{ mb: 0}}>
       <Toolbar>
         <Typography
           variant="h5"

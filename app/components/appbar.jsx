@@ -1,26 +1,79 @@
 "use client"
-import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Button, Paper, Toolbar, Typography } from "@mui/material";
 import Link from "next/link";
-import Image from "next/image";
 import { theme } from "../styles/global-theme";
-import BookDialog from "./dialag";
+import BookDialog from "./dialog";
 import { useState } from "react";
+import PersonIcon from '@mui/icons-material/Person';
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 
 export default function AppbarGlobal() {
+  
   const navItems = [
     { label: "About us", href: "/about-us" },
     { label: "Q&A", href: "/qa" },
   ];
   const loginNavItems = [
-    { label: "Sign in", bc_color: theme.palette.primary.main },
-    { label: "Sign up", bc_color: theme.palette.secondary.main},
+    { label: "Account", bc_color:theme.palette.secondary.main, icon: <PersonIcon/>},
   ];
+  const AccountOptions = [
+    {label: 'Sign In', icon: <PersonIcon sx={{width:'100px', height:'100px'}}/>, href: "/login"},
+    {label: 'Sign Up', icon: <PersonAddAlt1Icon sx={{width:'100px', height:'100px'}}/>, href: "/register"}
+  ]
+
   const [openDialog, setOpenDialog] = useState(false);
   const [action, setAction] = useState('')
+  const [reqs, setReqs] = useState([])
+  const [requireSecondButton, setRequireSeccondButton] = useState('false')
+
+  const card_config = {
+    p: 4,
+    textAlign: "center",
+    "&:hover": {
+    transform: "scale(1.05)",
+    transition: "transform 0.4s ease-in-out",
+    boxShadow: "0 10px 20px rgba(0, 0, 0, 0.2)",
+    },
+  }
+  const button_conf = { 
+    mt:3, 
+    backgroundColor: theme.palette.primary.main, 
+    color: 'grey', 
+    borderRadius: 2, 
+    "&:hover": {
+        backgroundColor: theme.palette.secondary.main,
+        color: theme.palette.primary.main
+    }
+  }
 
   const handleClick = (item) => {
     setOpenDialog(true)
     setAction(item.label)
+    if(item.label == 'Account'){
+      setReqs([])
+      var objs = []
+      AccountOptions.forEach(option => {
+        var new_obj = <Paper
+          elevation={3}
+          sx={card_config}
+          >
+            <Box display={'flex'} >
+            {option.icon}
+            </Box>
+            <Button sx={button_conf} 
+              component={Link}
+              href={option.href}
+              onClick={() => setOpenDialog(false)}
+              >
+              {option.label}
+            </Button>
+          </Paper>
+          objs.push(new_obj)
+        });
+      
+      setReqs(objs)
+      setRequireSeccondButton(false)
+    }
   }
 
   return (
@@ -59,10 +112,10 @@ export default function AppbarGlobal() {
           {loginNavItems.map((item) => (
             <Button
               key={item.label}
-              sx={{ color: "white", backgroundColor: item.bc_color}}
+              sx={{ color: item.bc_color}}
               onClick={() => handleClick(item)}
             >
-              {item.label}
+              {item.icon}
             </Button>
           ))}
         </Box>
@@ -72,6 +125,8 @@ export default function AppbarGlobal() {
         setOpen={setOpenDialog}
         action={action}
         title={action}
+        reqs={reqs}
+        requireButton={requireSecondButton}
       />
     </AppBar>
   );

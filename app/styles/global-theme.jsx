@@ -1,5 +1,4 @@
 "use client";
-
 import { createTheme } from "@mui/material";
 
 export const theme = createTheme({
@@ -23,7 +22,8 @@ export const theme = createTheme({
         main: "#D3D3D3"
     },
     text: {
-      light: "#003675",
+      dark: "#000000",
+      light: "#FFFFFF"
     },
   },
   typography: {

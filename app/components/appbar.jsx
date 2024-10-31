@@ -17,7 +17,7 @@ export default function AppbarGlobal() {
     { label: "Account", bc_color:theme.palette.secondary.main, icon: <PersonIcon/>},
   ];
   const AccountOptions = [
-    {label: 'Sign In', icon: <PersonIcon sx={{width:'100px', height:'100px'}}/>, href: "/qa"},
+    {label: 'Sign In', icon: <PersonIcon sx={{width:'100px', height:'100px'}}/>, href: "/login"},
     {label: 'Sign Up', icon: <PersonAddAlt1Icon sx={{width:'100px', height:'100px'}}/>, href: "/qa"}
   ]
 
@@ -62,7 +62,9 @@ export default function AppbarGlobal() {
             </Box>
             <Button sx={button_conf} 
               component={Link}
-              href={option.href}>
+              href={option.href}
+              onClick={() => setOpenDialog(false)}
+              >
               {option.label}
             </Button>
           </Paper>

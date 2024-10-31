@@ -18,7 +18,7 @@ export default function AppbarGlobal() {
   ];
   const AccountOptions = [
     {label: 'Sign In', icon: <PersonIcon sx={{width:'100px', height:'100px'}}/>, href: "/login"},
-    {label: 'Sign Up', icon: <PersonAddAlt1Icon sx={{width:'100px', height:'100px'}}/>, href: "/qa"}
+    {label: 'Sign Up', icon: <PersonAddAlt1Icon sx={{width:'100px', height:'100px'}}/>, href: "/register"}
   ]
 
   const [openDialog, setOpenDialog] = useState(false);

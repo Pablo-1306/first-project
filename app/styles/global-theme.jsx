@@ -20,7 +20,7 @@ export const theme = createTheme({
         main: '#0E4AFA'
     },
     footer :{
-        main: "#D3D3D3"
+        main: "#000"
     },
     text: {
       light: "#003675",

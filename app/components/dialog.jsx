@@ -7,12 +7,15 @@ import {
     TextField,
   } from "@mui/material";
 import { useState } from "react";
+import AutoGrid from "./grid";
   
   export default function BookDialog({
     open,
     setOpen,
     action,
-    title
+    title,
+    reqs,
+    requireSecondButton
   }) {
 
     const [value, setValue] = useState(action)
@@ -27,22 +30,32 @@ import { useState } from "react";
       >
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
-
-          <TextField
+        {typeof reqs[0] == 'string'?
+          reqs.map((req) => (
+            <TextField
             margin="dense"
-            name="title"
-            label="Title"
+            name={req}
+            label={req}
             fullWidth
             value={''}
-          />
+            />
+          ))
+          : 
+          <AutoGrid requiredSpaces={reqs}/>
+        }
         </DialogContent>
         <DialogActions>
           <Button sx={{color:'red'}} onClick={handleCloseDialog}>
             Cancel
           </Button>
-          <Button color="primary" >
-            {value}
-          </Button>
+          
+          {requireSecondButton?
+            <Button color="primary" >
+              {title}
+            </Button>
+          : <></>
+          }
+          
         </DialogActions>
       </Dialog>
     );

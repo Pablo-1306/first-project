@@ -32,7 +32,8 @@ export default function FooterGlobal() {
                             letterSpacing: ".05rem",
                             color: theme.palette.primary.main,
                             textDecoration: "none",
-                            ml: 2
+                            ml: 2,
+                            color: 'white'
                         }}
                         >
                             EduTrack
@@ -43,26 +44,38 @@ export default function FooterGlobal() {
                     <Box>
                         <Typography
                         variant="h5"
-                        color="black"
+                        color="white"
                         fontWeight={'bold'}
                         >
                             Company
                         </Typography>
+                    <Box>
                         <Typography
                         variant="h7"
-                        color="black"
+                        color="white"
                         component={Link}
                         href="/about-us"
                         >
-                            About Us
+                            Brand
                         </Typography>
+                    </Box>
+                    <Box>
+                        <Typography
+                        variant="h7"
+                        color="white"
+                        component={Link}
+                        href="/about-us"
+                        >
+                            Terms & Conditions
+                        </Typography>
+                    </Box>
                     </Box>
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6, md: 2 }} sx={{ mb: 4,mt:4, display:'flex' }}>
                     <Box>
                         <Typography
                         variant="h5"
-                        color="black"
+                        color="white"
                         fontWeight={'bold'}
                         >
                             Resources
@@ -70,11 +83,21 @@ export default function FooterGlobal() {
                         <Box>
                         <Typography
                         variant="h7"
-                        color="black"
+                        color="white"
                         component={Link}
                         href="/qa"
                         >
                             Comunnity Q&A
+                        </Typography>
+                        </Box>
+                        <Box>
+                        <Typography
+                        variant="h7"
+                        color="white"
+                        component={Link}
+                        href="/qa"
+                        >
+                            Shipping & Changes
                         </Typography>
                         </Box>
                     </Box>
@@ -83,14 +106,14 @@ export default function FooterGlobal() {
                     <Box>
                         <Typography
                         variant="h5"
-                        color="black"
+                        color="white"
                         fontWeight={'bold'}
                         >
                             Contact
                         </Typography>
                         <Typography
                         variant="h7"
-                        color="black"
+                        color="white"
                         component={Link}
                         href="/support"
                         >
@@ -102,13 +125,13 @@ export default function FooterGlobal() {
                     <Box>
                         <Typography
                         variant="h6"
-                        color="black"
+                        color="white"
                         >
                             Subscribe to our newsletter
                         </Typography>
-                        <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-                            <AccountCircle sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-                            <TextField id="input-with-sx" label="Email" variant="standard" />
+                        <Box sx={{ display: 'flex', alignItems: 'flex-end'}}>
+                            <AccountCircle sx={{ color: 'white', mr: 1, my: 0.5 }} />
+                            <TextField id="input-with-sx" label="Email" variant="standard" sx={{color:'white'}}/>
                             <Button sx={{ml:1, backgroundColor: theme.palette.primary.main}} color="white">Subscribe</Button>
                         </Box>
                     </Box>

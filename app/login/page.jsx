@@ -124,9 +124,9 @@ export default function LoginPage() {
               mt: 2,
               mb: 4,
               py: 1.5,
-              bgcolor: '#1976d2',  
+              bgcolor: '#000000',  
               '&:hover': {
-                bgcolor: '#1565c0'  
+                bgcolor: '#232222' 
               },
               color: 'white',
               textTransform: 'none',

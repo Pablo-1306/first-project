@@ -4,9 +4,12 @@ import { Box, Container, Divider, Paper, Typography, useTheme } from "@mui/mater
 import Grid from '@mui/material/Grid2';
 import Image from "next/image";
 import Link from "next/link";
+import { useProducts } from "./context/productContext";
 
 export default function Home() {
   const theme = useTheme();
+
+  const {products} = useProducts();
 
   return (
     <Container disableGutters maxWidth='xxl'>
@@ -102,135 +105,33 @@ export default function Home() {
       {/* PRODUCTS */}
       <Container maxWidth="xl" sx={{mt: 10}}>
         <Grid container>
-          <Grid size={{xs: 12, md: 6, lg: 3}}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              mb: 8
-            }}
-          >
-            <Box
+          {products.map(product => (
+            <Grid size={{xs: 12, md: 6, lg: 3}} key={product.id}
               sx={{
-                textDecoration: 'none',
-                width: 240
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                mb: 8
               }}
             >
-              <Box component={Link} href='/'>
-                <Image src='/shirt-test.jpeg' width='240' height='320'/>
+              <Box
+                sx={{
+                  textDecoration: 'none',
+                  width: 240
+                }}
+              >
+                <Box component={Link} href='/'>
+                  <Image src='/shirt-test.jpeg' width='240' height='320'/>
+                </Box>
+                <Typography variant="subtitle2" color={theme.palette.text.dark}>
+                  {product.name}
+                </Typography>
+                <Typography variant="caption" color={theme.palette.text.dark}>
+                  {product.price}
+                </Typography>
               </Box>
-              <Typography variant="subtitle2" color={theme.palette.text.dark}>
-                Lorem ipsum
-              </Typography>
-              <Typography variant="caption" color={theme.palette.text.dark}>
-                $2,200.00 MXN
-              </Typography>
-            </Box>
-          </Grid>
-
-          <Grid size={{xs: 12, md: 6, lg: 3}}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              mb: 8
-            }}
-          >
-            <Box
-              sx={{
-                textDecoration: 'none',
-                width: 240
-              }}
-            >
-              <Box component={Link} href='/'>
-                <Image src='/shirt-test.jpeg' width='240' height='320'/>
-              </Box>
-              <Typography variant="subtitle2" color={theme.palette.text.dark}>
-                Lorem ipsum
-              </Typography>
-              <Typography variant="caption" color={theme.palette.text.dark}>
-                $2,200.00 MXN
-              </Typography>
-            </Box>
-          </Grid>
-
-          <Grid size={{xs: 12, md: 6, lg: 3}}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              mb: 8
-            }}
-          >
-            <Box
-              sx={{
-                textDecoration: 'none',
-                width: 240
-              }}
-            >
-              <Box component={Link} href='/'>
-                <Image src='/shirt-test.jpeg' width='240' height='320'/>
-              </Box>
-              <Typography variant="subtitle2" color={theme.palette.text.dark}>
-                Lorem ipsum
-              </Typography>
-              <Typography variant="caption" color={theme.palette.text.dark}>
-                $2,200.00 MXN
-              </Typography>
-            </Box>
-          </Grid>
-
-          <Grid size={{xs: 12, md: 6, lg: 3}}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              mb: 8
-            }}
-          >
-            <Box
-              sx={{
-                textDecoration: 'none',
-                width: 240
-              }}
-            >
-              <Box component={Link} href='/'>
-                <Image src='/shirt-test.jpeg' width='240' height='320'/>
-              </Box>
-              <Typography variant="subtitle2" color={theme.palette.text.dark}>
-                Lorem ipsum
-              </Typography>
-              <Typography variant="caption" color={theme.palette.text.dark}>
-                $2,200.00 MXN
-              </Typography>
-            </Box>
-          </Grid>
-
-          <Grid size={{xs: 12, md: 6, lg: 3}}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              mb: 8
-            }}
-          >
-            <Box 
-              sx={{
-                textDecoration: 'none',
-                width: 240
-              }}
-            >
-              <Box component={Link} href='/'>
-                <Image src='/shirt-test.jpeg' width='240' height='320'/>
-              </Box>
-              <Typography variant="subtitle2" color={theme.palette.text.dark}>
-                Lorem ipsum
-              </Typography>
-              <Typography variant="caption" color={theme.palette.text.dark}>
-                $2,200.00 MXN
-              </Typography>
-            </Box>
-          </Grid>
+            </Grid>
+          ))}
 
         </Grid>
       </Container>
@@ -248,12 +149,9 @@ export default function Home() {
         }}
       >
       </Box>
-      {/* <Box>
-        <Image src='/banner-home2.jpeg' width='2000' height='907'/>
-      </Box> */}
 
       {/* STORE DESCRIPTION */}
-      <Container textAlign='center' maxWidth='md' sx={{my: 12}}>
+      <Container textalign='center' maxWidth='md' sx={{my: 12}}>
         <Typography variant="h3" textAlign='center'
           sx={{
             fontFamily: "Grenze Gotisch",

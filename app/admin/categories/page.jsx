@@ -23,7 +23,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useStore } from '../../context/StoreContext';
 
 export default function AdminCategories() {
-  const { categories, products, addProduct, updateProduct, deleteProduct, isClient } = useStore();
+  const { categories, products, addProduct, updateProduct, deleteProduct } = useStore();
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -141,7 +141,7 @@ export default function AdminCategories() {
                 >
                   <ListItemText 
                     primary={category.name}
-                    secondary={isClient ? `Products: ${products[category.id]?.length || 0}` : 'Loading...'}
+                    secondary={`Products: ${products[category.id]?.length || 0}`}
                   />
                 </ListItem>
               ))}
@@ -230,6 +230,7 @@ export default function AdminCategories() {
         )}
       </Paper>
 
+      {/* Dialog para crear/editar producto */}
       <Dialog 
         open={openDialog} 
         onClose={handleCloseDialog}

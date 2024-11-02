@@ -4,9 +4,18 @@ import { Box, Container, Divider, Paper, Typography, useTheme } from "@mui/mater
 import Grid from '@mui/material/Grid2';
 import Image from "next/image";
 import Link from "next/link";
+import { initialCategories } from "./constants/categories/constants";
+import { useState } from "react";
+import { initialProducts } from "./constants/products/constants";
 
 export default function Home() {
   const theme = useTheme();
+
+  //Delete in the future when added context for categories:
+  const [categories, setCategories] = useState(initialCategories);
+
+  //Delete in the future when added context for products:
+  const [products, setProducts] = useState(initialProducts);
 
   return (
     <Container disableGutters maxWidth='xxl'>
@@ -40,61 +49,19 @@ export default function Home() {
             my:{sm: 6}
           }}
         >
-          <Grid size={{xs: 12, sm: 2}}
-            sx={{
-              mb: {xs: 3, sm: 0}
-            }}
-          >
-            <Typography component={Link} href='/' color={theme.palette.text.dark}
-              sx={{textDecoration: 'underline'}}
+          {categories.map(category => (
+            <Grid size={{xs: 12, sm: 2}} key={category.label}
+              sx={{
+                mb: {xs: 3, sm: 0}
+              }}
             >
-              Women
-            </Typography>
-          </Grid>
-          <Grid size={{xs: 12, sm: 2}}
-            sx={{
-              mb: {xs: 3, sm: 0}
-            }}
-          >
-            <Typography component={Link} href='/' color={theme.palette.text.dark}
-              sx={{textDecoration: 'underline'}}
-            >
-              Men
-            </Typography>
-          </Grid>
-          <Grid size={{xs: 12, sm: 2}}
-            sx={{
-              mb: {xs: 3, sm: 0}
-            }}
-          >
-            <Typography component={Link} href='/' color={theme.palette.text.dark}
-              sx={{textDecoration: 'underline'}}
-            >
-              Child
-            </Typography>
-          </Grid>
-          <Grid size={{xs: 12, sm: 2}}
-            sx={{
-              mb: {xs: 3, sm: 0}
-            }}
-          >
-            <Typography component={Link} href='/' color={theme.palette.text.dark}
-              sx={{textDecoration: 'underline'}}
-            >
-              Winter
-            </Typography>
-          </Grid>
-          <Grid size={{xs: 12, sm: 2}}
-            sx={{
-              mb: {xs: 3, sm: 0}
-            }}
-          >
-            <Typography component={Link} href='/' color={theme.palette.text.dark}
-              sx={{textDecoration: 'underline'}}
-            >
-              Summer
-            </Typography>
-          </Grid>
+              <Typography component={Link} href='/' color={theme.palette.text.dark}
+                sx={{textDecoration: 'underline'}}
+              >
+                {category.label}
+              </Typography>
+            </Grid>
+          ))}
         </Grid>
       </Container>
 
@@ -103,136 +70,33 @@ export default function Home() {
       {/* PRODUCTS */}
       <Container maxWidth="xl" sx={{mt: 10}}>
         <Grid container>
-          <Grid size={{xs: 12, md: 6, lg: 3}}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              mb: 8
-            }}
-          >
-            <Box
+          {products.map(product => (
+            <Grid size={{xs: 12, md: 6, lg: 3}} key={product.id}
               sx={{
-                textDecoration: 'none',
-                width: 240
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                mb: 8
               }}
             >
-              <Box component={Link} href='/'>
-                <Image src='/shirt-test.jpeg' width='240' height='320'/>
+              <Box
+                sx={{
+                  textDecoration: 'none',
+                  width: 240
+                }}
+              >
+                <Box component={Link} href={`/products/${product.id}`}>
+                  <Image src={product.image} width='240' height='320'/>
+                </Box>
+                <Typography variant="subtitle2" color={theme.palette.text.dark}>
+                  {product.name}
+                </Typography>
+                <Typography variant="caption" color={theme.palette.text.dark}>
+                  {product.price}
+                </Typography>
               </Box>
-              <Typography variant="subtitle2" color={theme.palette.text.dark}>
-                Lorem ipsum
-              </Typography>
-              <Typography variant="caption" color={theme.palette.text.dark}>
-                $2,200.00 MXN
-              </Typography>
-            </Box>
-          </Grid>
-
-          <Grid size={{xs: 12, md: 6, lg: 3}}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              mb: 8
-            }}
-          >
-            <Box
-              sx={{
-                textDecoration: 'none',
-                width: 240
-              }}
-            >
-              <Box component={Link} href='/'>
-                <Image src='/shirt-test.jpeg' width='240' height='320'/>
-              </Box>
-              <Typography variant="subtitle2" color={theme.palette.text.dark}>
-                Lorem ipsum
-              </Typography>
-              <Typography variant="caption" color={theme.palette.text.dark}>
-                $2,200.00 MXN
-              </Typography>
-            </Box>
-          </Grid>
-
-          <Grid size={{xs: 12, md: 6, lg: 3}}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              mb: 8
-            }}
-          >
-            <Box
-              sx={{
-                textDecoration: 'none',
-                width: 240
-              }}
-            >
-              <Box component={Link} href='/'>
-                <Image src='/shirt-test.jpeg' width='240' height='320'/>
-              </Box>
-              <Typography variant="subtitle2" color={theme.palette.text.dark}>
-                Lorem ipsum
-              </Typography>
-              <Typography variant="caption" color={theme.palette.text.dark}>
-                $2,200.00 MXN
-              </Typography>
-            </Box>
-          </Grid>
-
-          <Grid size={{xs: 12, md: 6, lg: 3}}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              mb: 8
-            }}
-          >
-            <Box
-              sx={{
-                textDecoration: 'none',
-                width: 240
-              }}
-            >
-              <Box component={Link} href='/'>
-                <Image src='/shirt-test.jpeg' width='240' height='320'/>
-              </Box>
-              <Typography variant="subtitle2" color={theme.palette.text.dark}>
-                Lorem ipsum
-              </Typography>
-              <Typography variant="caption" color={theme.palette.text.dark}>
-                $2,200.00 MXN
-              </Typography>
-            </Box>
-          </Grid>
-
-          <Grid size={{xs: 12, md: 6, lg: 3}}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              mb: 8
-            }}
-          >
-            <Box 
-              sx={{
-                textDecoration: 'none',
-                width: 240
-              }}
-            >
-              <Box component={Link} href='/'>
-                <Image src='/shirt-test.jpeg' width='240' height='320'/>
-              </Box>
-              <Typography variant="subtitle2" color={theme.palette.text.dark}>
-                Lorem ipsum
-              </Typography>
-              <Typography variant="caption" color={theme.palette.text.dark}>
-                $2,200.00 MXN
-              </Typography>
-            </Box>
-          </Grid>
-
+            </Grid>
+          ))}
         </Grid>
       </Container>
 

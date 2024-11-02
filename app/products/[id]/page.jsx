@@ -4,16 +4,29 @@ import { useTheme } from "@emotion/react";
 import { Box, Button, Container, Typography, Divider, Rating } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import Image from "next/image";
-import { useState } from "react";
-import { useReviews } from "../contexts/ReviewContext";
-import ReviewDialog from "../components/review-dialog";
+import { useState, useEffect } from "react";
+import { useReviews } from "../../contexts/ReviewContext";
+import ReviewDialog from "../../components/review-dialog";
+import { initialProducts } from "../../constants/products/constants";
 
-export default function IndividualProduct() {
-
+// Individual product page accessed at /products/[id]
+// The {params} object is passed by Next.js and contains the id of the product
+export default function IndividualProduct({params}) {
     const theme = useTheme();
 
+    // DELETE in the future when added context for products:
+    const [products, setProducts] = useState(initialProducts);
+
+    // Get the id of the product from the URL
+    const productId = params.id;
+
+    // Find the specific product by id
+    const product = products.find((p) => p.id === productId);
+
+    // Access to list of reviews and addReview (CREATE) function
     const {reviews, addReview} = useReviews();
 
+    // Review state to add a new review
     const [review, setReview] = useState({
         id: '',
         user: '',
@@ -21,12 +34,18 @@ export default function IndividualProduct() {
         rating: 0
     });
 
+    // Find the reviews for the current product
+    const productReviews = reviews.filter((r) => r.product === params.id);
+
+    // Qty selection button state and functions
     const [count, setCount] = useState(1);
     const handleIncrement = () => setCount(count + 1);
     const handleDecrement = () => setCount(count > 0 ? count - 1 : 0);
 
+    // State to open or close the review dialog
     const [openDialog, setOpenDialog] = useState(false);
 
+    // Function to open the review dialog and reset the review state
     const handleReview = () => {
         setOpenDialog(true);
         setReview({
@@ -45,15 +64,15 @@ export default function IndividualProduct() {
                 <Grid container>
 
                     <Grid size={{md: 6}}>
-                        <Image src='/shirt-test.jpeg' width='511' height='681' alt="shirt image"/>
+                        <Image src={product.image} width='511' height='681' alt={product.name}/>
                     </Grid>
 
                     <Grid size={{md: 6}} sx={{pl: 14}}>
                         <Typography variant="h3">
-                            Blue Shirt
+                            {product.name}
                         </Typography>
                         <Typography variant="body1" sx={{mt: 1}}>
-                            $2,200.00 MXN
+                            {product.price}
                         </Typography>
 
                         {/* Qty selection button */}
@@ -102,7 +121,7 @@ export default function IndividualProduct() {
                     Reviews
                 </Typography>
 
-                {reviews.map(review => (
+                {productReviews.map(review => ( 
                     <Grid container key={review.id} sx={{borderBottom: '1px solid black', mt: 2}}>
                         <Grid size={{md: 8}}>
                             <Typography variant="body2">
@@ -131,8 +150,9 @@ export default function IndividualProduct() {
 
             </Container>
 
+            {/* REVIEW DIALOG FOR CREATING A REVIEW */}
             <ReviewDialog  open={openDialog} setOpen={setOpenDialog} review={review} 
-                setReview={setReview} reviews={reviews} addReview={addReview}
+                setReview={setReview} reviews={reviews} addReview={addReview} productId={productId}
             />
         </Container>
     )

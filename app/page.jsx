@@ -29,12 +29,13 @@ export default function Home() {
       
       {/* CATEGORIES */}
       <Container maxWidth='xl'>
-        <Grid container textAlign='center'
+        <Grid container
           sx={{
             display: "flex", 
             flexDirection: "row",
             justifyContent: "center",
             alignItems: "center",
+            textAlign: 'center',
             mt:{xs: 3, sm: 0},
             my:{sm: 6}
           }}
@@ -248,12 +249,9 @@ export default function Home() {
         }}
       >
       </Box>
-      {/* <Box>
-        <Image src='/banner-home2.jpeg' width='2000' height='907'/>
-      </Box> */}
 
       {/* STORE DESCRIPTION */}
-      <Container textAlign='center' maxWidth='md' sx={{my: 12}}>
+      <Container maxWidth='md' sx={{my: 12}}>
         <Typography variant="h3" textAlign='center'
           sx={{
             fontFamily: "Grenze Gotisch",

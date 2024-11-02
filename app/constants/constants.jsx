@@ -42,3 +42,68 @@ export const enterprise_content = [
     {label: 'Monitoring', icon: <CheckCircleOutlineIcon sx={CHECK_CIRCLE_CONFIG}/>},
     {label: 'Error notifications', icon: <CheckCircleOutlineIcon sx={CHECK_CIRCLE_CONFIG}/>},
 ]
+
+export const handleDelete =(id, rows, setRows) => {
+  setRows(rows.filter((row) => row.id != id));
+
+};
+
+export const handleEdit = (id, rows, setRows) => {
+  const rowToEdit = rows.find ((row)=> row.id == id);
+  const updateValue = prompt ("Edita la cantidad:",rowToEdit.cantidad);
+  if (updateValue){
+      setRows(
+          rows.map((row) =>
+          row.id === id ? {...row,cantidad:updateValue} : row
+          )
+      );
+  }
+};
+
+export const initialRows = [
+  {
+    id: 1,
+    clothes: "Playera",
+    size: "M",
+    gender: "Hombre",
+    description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo",
+    cantidad: 19,
+
+  },
+  {
+    id: 2,
+    clothes: "Pantalon",
+    size: "S",
+    gender: "Hombre",
+    description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo",
+    cantidad: 1963,
+  },
+  {
+    id: 3,
+    clothes: "Zapatos",
+    size: "XS",
+    gender: "Hombre",
+    description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo",
+    cantidad: 1963,
+  },
+
+   {
+    id: 4,
+    clothes: "Vestido",
+    size: "L",
+    gender: "Mujer",
+    description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo",
+    cantidad: 1963,
+  },
+  {
+    id: 5,
+    clothes: "Playera",
+    size: "XL",
+    gender: "Mujer",
+    description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmo",
+    cantidad: 1963,
+  },
+  
+  
+  
+];

@@ -12,6 +12,8 @@ export default function AppbarGlobal() {
   const navItems = [
     { label: "About us", href: "/about-us" },
     { label: "Q&A", href: "/qa" },
+    { label: "Inventory", href: "/inventory" },
+    
   ];
   const loginNavItems = [
     { label: "Account", bc_color:theme.palette.secondary.main, icon: <PersonIcon/>},

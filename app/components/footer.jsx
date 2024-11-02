@@ -14,7 +14,6 @@ export default function FooterGlobal() {
         <Container maxWidth='100vw' disableGutters
             sx={{
                 backgroundColor: theme.palette.secondary.main,
-                border: '1px solid white'
             }}
         >
             <Container maxWidth='md'>

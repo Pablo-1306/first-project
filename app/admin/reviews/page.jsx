@@ -5,9 +5,11 @@ import Grid from "@mui/material/Grid2";
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import { useReviews } from "@/app/contexts/ReviewContext";
 
+// Reviews page accessed at /admin/reviews
 export default function Reviews() {
     const theme = useTheme();
 
+    //Give us access to the reviews and the deleteReview function from the ReviewContext
     const {reviews, deleteReview} = useReviews();
 
     return(

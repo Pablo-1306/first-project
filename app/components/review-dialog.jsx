@@ -1,11 +1,14 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Rating, TextField } from "@mui/material";
 import { theme } from "../styles/global-theme";
 
-export default function ReviewDialog({open, setOpen, review, setReview, reviews, addReview}) {
+export default function ReviewDialog({open, setOpen, review, setReview, reviews, addReview, productId}) {
+
+    // Function to close the dialog
     const handleCloseDialog = () => {
         setOpen(false);
     }
 
+    // Function to handle the change of the review state
     const handleChange = (e) => {
         setReview({
             ...review,
@@ -13,12 +16,12 @@ export default function ReviewDialog({open, setOpen, review, setReview, reviews,
         })
     }
 
+    // Function to save the review
     const saveReview = () => {
         review.id = reviews.length + 1;
-        review.product = 'id 1';
-        addReview(review);
-        console.log('review', review);
-        handleCloseDialog();
+        review.product = productId;
+        addReview(review); // Add the review to the list of reviews
+        handleCloseDialog(); // Close the dialog
     }
 
     return (
@@ -32,6 +35,7 @@ export default function ReviewDialog({open, setOpen, review, setReview, reviews,
                     fullWidth
                     value={review.review}
                     onChange={handleChange}
+                    color={theme.palette.secondary.main}
                 />
                 <TextField 
                     name="user"
@@ -40,6 +44,7 @@ export default function ReviewDialog({open, setOpen, review, setReview, reviews,
                     fullWidth
                     value={review.user}
                     onChange={handleChange}
+                    color={theme.palette.secondary.main}
                 />
                 <Rating 
                     name="rating"

@@ -1,34 +1,46 @@
 "use client";
 
-import { Box, Button, Card, CardContent, Container, Grid, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, Button, Container, Grid, IconButton, Typography} from "@mui/material";
 import { useState } from "react";
 import { initialCard } from "@/app/constants/payment/constants";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CardDialog from "@/app/components/card-dialog";
 
 export default function paymentMethods(){
 
+    const [cardList, setCardList] = useState(initialCard);
+    const [action, setAction] = useState("");
+    const [card, setCard] = useState({
+        id: null,
+        alias: "",
+        name: "",
+        number: "",
+        month: "",
+        year: "",
+        cvv: ""
+    })
+    const deleteCard = (id) => setCardList(cardList.filter(card => card.id !== id))
     const handleCard = ({action, card}) => {
-        setAction(action);
-        {/* Aqui abrir el dialogo */};
+        setAction(action)
+        setOpenCardDialog(true)
 
         if (action == "add"){
             setCard({
-              id: null,
-              alias: "",
-              name: "",
-              number: "",
-              month: "",
-              year: "",
-              cvv: ""
+                id: null,
+                alias: "",
+                name: "",
+                number: "",
+                month: "",
+                year: "",
+                cvv: ""
             });
-          } else if (action == "edit"){
-            setCard(book);
-          }
+        } else if (action == "edit"){
+            setCard(card)
+        }
+
     }
-    const [card, setCard] = useState(initialCard);
-    const deleteCard = (id) => setCard(card.filter(card => card.id !== id))
-    const [action, setAction]  = useState("");
+
     const [openCardDialog, setOpenCardDialog] = useState(false);
 
     return(
@@ -38,7 +50,7 @@ export default function paymentMethods(){
                     <Typography variant='h4' sx={{mb:3}}>
                         Your Payments Methods
                     </Typography>
-                    {card.map(card => (
+                    {cardList.map(card => (
                       <Grid container justifyContent="space-between" sx={{mb:3}}>
                         <Box>
                           <Typography variant="h5">
@@ -55,6 +67,7 @@ export default function paymentMethods(){
                         <Box display="flex" flexDirection="column">
                           <IconButton
                               color="secondary"
+                              onClick={() => handleCard({action: "edit", card: card})}
                           >
                               <EditIcon/>
                           </IconButton>
@@ -71,7 +84,7 @@ export default function paymentMethods(){
                         type="submit"
                         fullWidth
                         variant="contained"
-                        onClick={() => handleCard({ action: "add" })}
+                        onClick={() => handleCard({action: "add"})}
                         sx={{ mt: 2, mb: 4, py: 1.5, bgcolor: '#000000', '&:hover': {
                         bgcolor: '#232222'},
                         color: 'white',
@@ -81,6 +94,15 @@ export default function paymentMethods(){
                     </Button>
                 </Grid>
             </Grid>
+            <CardDialog
+              open={openCardDialog}
+              setOpen={setOpenCardDialog}
+              action={action}
+              card={card}
+              setCard={setCard}
+              cardList={cardList}
+              setCardList={setCardList}
+            />
         </Container>
     )
 }

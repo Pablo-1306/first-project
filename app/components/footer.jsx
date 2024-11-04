@@ -13,11 +13,9 @@ export default function FooterGlobal() {
     return (
         <Box
             sx={{
-                position: 'fixed',
-                bottom: 0,
                 width: '100%',
                 backgroundColor: theme.palette.secondary.main,
-                zIndex: 1000, // Ensure the footer is above other elements
+                mt: 'auto'
             }}
         >
             <Container maxWidth='100vw' disableGutters

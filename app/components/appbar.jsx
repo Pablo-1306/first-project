@@ -1,11 +1,13 @@
 "use client"
-import { AppBar, Box, Button, Paper, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Button, Paper, Toolbar, Typography, Dialog } from "@mui/material";
 import Link from "next/link";
 import { theme } from "../styles/global-theme";
 import BookDialog from "./dialog";
 import { useState } from "react";
 import PersonIcon from '@mui/icons-material/Person';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import CartView from "./cart-view";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 export default function AppbarGlobal() {
   
@@ -21,10 +23,18 @@ export default function AppbarGlobal() {
     {label: 'Sign Up', icon: <PersonAddAlt1Icon sx={{width:'100px', height:'100px'}}/>, href: "/register"}
   ]
 
-  const [openDialog, setOpenDialog] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false)
   const [action, setAction] = useState('')
   const [reqs, setReqs] = useState([])
   const [requireSecondButton, setRequireSeccondButton] = useState('false')
+
+  // Cart constants
+  const cartItems = [
+    { label: "Shopping Cart", bc_color:theme.palette.secondary.main, icon: <ShoppingCartIcon/>},
+  ];
+  const [openCart, setOpenCart] = useState(false);
+  const handleOpenCart = () => setOpenCart(true);
+  const handleCloseCart = () => setOpenCart(false);
 
   const card_config = {
     p: 4,
@@ -96,19 +106,33 @@ export default function AppbarGlobal() {
         >
           EduTrack
         </Typography>
-        <Box sx={{ mr: "auto", ml: 2, display: "block" }}>
+
+        <Box sx={{ mr: 1, ml: 3, display: "block" }}>
           {navItems.map((item) => (
             <Button
               key={item.label}
               component={Link}
               href={item.href}
-              sx={{ color: "white" }}
+              sx={{ color: "black" }}
             >
               {item.label}
             </Button>
           ))}
         </Box>
-        <Box sx={{ ml: "auto", mr: 1, display: "block" }}>
+
+        <Box sx={{ ml: "auto", display: "flex", alignItems: "center" }}>
+          {/* SHOPPING CART BUTTON */}
+          {cartItems.map((item) => (
+            <Button
+              key={item.label}
+              sx={{ color: item.bc_color}}
+              onClick={handleOpenCart}
+            >
+              {item.icon}
+            </Button>
+          ))}
+
+          {/* ACCOUNT BUTTON */}
           {loginNavItems.map((item) => (
             <Button
               key={item.label}
@@ -119,6 +143,12 @@ export default function AppbarGlobal() {
             </Button>
           ))}
         </Box>
+        
+        {/* SHOPPING CART DIALOG */}
+        <Dialog open={openCart} onClose={handleCloseCart} fullWidth maxWidth="sm">
+          <CartView />
+        </Dialog>
+
       </Toolbar>
       <BookDialog
         open={openDialog}

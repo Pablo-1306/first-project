@@ -55,8 +55,10 @@ export default function Home() {
                 mb: {xs: 3, sm: 0}
               }}
             >
-              <Typography component={Link} href='/' color={theme.palette.text.dark}
-                sx={{textDecoration: 'underline'}}
+              <Typography component={Link} 
+              href={category.path}
+              color={theme.palette.text.dark}
+              sx={{textDecoration: 'underline'}}
               >
                 {category.label}
               </Typography>

@@ -1,11 +1,14 @@
 export const initialCategories = [
     {
-        label: 'Women'
+      label: 'Women',
+      path: '/categories//women'
     },
     {
-        label: 'Men'
+      label: 'Men',
+      path: '/categories/men'
     },
     {
-        label: 'Child'
+      label: 'Child',
+      path: '/categories/child'
     }
-];
+  ];

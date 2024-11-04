@@ -1,4 +1,4 @@
-import { CssBaseline, ThemeProvider } from "@mui/material";
+import { Box, CssBaseline, ThemeProvider } from "@mui/material";
 import localFont from "next/font/local";
 import { theme } from "./styles/global-theme";
 import AppbarGlobal from "./components/appbar";
@@ -37,9 +37,17 @@ export default function RootLayout({ children }) {
           <ReviewProvider>
             <CartProvider>
               <CssBaseline />
-              <AppbarGlobal />
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  minHeight: "100vh",
+                }}
+              >
+                <AppbarGlobal />
                 {children}
-              <FooterGlobal />
+                <FooterGlobal />
+              </Box>
             </CartProvider>
           </ReviewProvider>
         </ThemeProvider>

@@ -4,6 +4,7 @@ import { theme } from "./styles/global-theme";
 import AppbarGlobal from "./components/appbar";
 import FooterGlobal from "./components/footer";
 import { ReviewProvider } from "./contexts/ReviewContext";
+import { CartProvider } from "./contexts/CartContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -34,10 +35,12 @@ export default function RootLayout({ children }) {
       >
         <ThemeProvider theme={theme}>
           <ReviewProvider>
-            <CssBaseline />
-            <AppbarGlobal />
-            {children}
-            <FooterGlobal />
+            <CartProvider>
+              <CssBaseline />
+              <AppbarGlobal />
+                {children}
+              <FooterGlobal />
+            </CartProvider>
           </ReviewProvider>
         </ThemeProvider>
       </body>

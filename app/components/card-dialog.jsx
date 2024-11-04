@@ -15,7 +15,9 @@ import {
     card,
     setCard,
     cardList,
-    setCardList
+    setCardList,
+    setAlert,
+    setOpenAlert
   }) {
 
     const closeDialog = () => {
@@ -33,9 +35,18 @@ import {
         if (action == "add"){
             card.id = cardList.length + 1;
             setCardList([...cardList, card])
+            setAlert({
+                message: 'Card added successfully',
+                severity: 'success'
+            })
         } else if (action == "edit"){
             setCardList(cardList.map(newCard => newCard.id === card.id ? card : newCard))
+            setAlert({
+                message: 'Card edited successfully',
+                severity: 'success'
+            })
         }
+        setOpenAlert(true)
         closeDialog()
     };
 

@@ -14,9 +14,10 @@ export default function AppbarGlobal() {
   const navItems = [
     { label: "About us", href: "/about-us" },
     { label: "Q&A", href: "/qa" },
+    { label: "Admin", href: "/admin/categories" },
   ];
   const loginNavItems = [
-    { label: "Account", bc_color:theme.palette.secondary.main, icon: <PersonIcon/>},
+    { label: "Account", icon: <PersonIcon/>},
   ];
   const AccountOptions = [
     {label: 'Sign In', icon: <PersonIcon sx={{width:'100px', height:'100px'}}/>, href: "/login"},
@@ -30,7 +31,7 @@ export default function AppbarGlobal() {
 
   // Cart constants
   const cartItems = [
-    { label: "Shopping Cart", bc_color:theme.palette.secondary.main, icon: <ShoppingCartIcon/>},
+    { label: "Shopping Cart", icon: <ShoppingCartIcon/>},
   ];
   const [openCart, setOpenCart] = useState(false);
   const handleOpenCart = () => setOpenCart(true);
@@ -87,7 +88,7 @@ export default function AppbarGlobal() {
   }
 
   return (
-    <AppBar position='sticky' sx={{ mb: 0}}>
+    <AppBar position='sticky' sx={{ mb: 0, bgcolor: theme.palette.secondary.main }}>
       <Toolbar>
         <Typography
           variant="h5"
@@ -99,7 +100,7 @@ export default function AppbarGlobal() {
             fontFamily: "Grenze Gotisch",
             fontWeight: 700,
             letterSpacing: ".05rem",
-            color: "inherit",
+            color: theme.palette.primary.main,
             textDecoration: "none",
             ml: 2
           }}
@@ -113,7 +114,7 @@ export default function AppbarGlobal() {
               key={item.label}
               component={Link}
               href={item.href}
-              sx={{ color: "black" }}
+              sx={{ color: theme.palette.primary.main }}
             >
               {item.label}
             </Button>
@@ -125,7 +126,7 @@ export default function AppbarGlobal() {
           {cartItems.map((item) => (
             <Button
               key={item.label}
-              sx={{ color: item.bc_color}}
+              sx={{ color: theme.palette.primary.main}}
               onClick={handleOpenCart}
             >
               {item.icon}
@@ -136,7 +137,7 @@ export default function AppbarGlobal() {
           {loginNavItems.map((item) => (
             <Button
               key={item.label}
-              sx={{ color: item.bc_color}}
+              sx={{ color: theme.palette.primary.main}}
               onClick={() => handleClick(item)}
             >
               {item.icon}

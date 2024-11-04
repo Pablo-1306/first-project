@@ -43,18 +43,18 @@ export const initialProducts = [
       category: 'child'
     },
     {
-        id: '6',
+        id: '7',
         name: 'Yellow Dress',
         price: '$1,800.00 MXN',
         image: '/shirt-test.jpeg',
         category: 'women'
       },
       {
-        id: '6',
+        id: '8',
         name: 'Yellow Dress',
         price: '$1,800.00 MXN',
         image: '/shirt-test.jpeg',
         category: 'men'
       }
     
-  ];
+  ]; 

@@ -1,7 +1,7 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Rating, TextField } from "@mui/material";
 import { theme } from "../styles/global-theme";
 
-export default function ReviewDialog({open, setOpen, review, setReview, reviews, addReview, productId}) {
+export default function ReviewDialog({open, setOpen, review, setReview, reviews, addReview, productId, setAlert, setOpenAlert}) {
 
     // Function to close the dialog
     const handleCloseDialog = () => {
@@ -21,6 +21,11 @@ export default function ReviewDialog({open, setOpen, review, setReview, reviews,
         review.id = reviews.length + 1;
         review.product = productId;
         addReview(review); // Add the review to the list of reviews
+        setAlert({
+            message: 'Review added successfully',
+            severity: 'success'
+        });
+        setOpenAlert(true); // Open the alert
         handleCloseDialog(); // Close the dialog
     }
 

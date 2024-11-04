@@ -9,6 +9,7 @@ import { useReviews } from "../../contexts/ReviewContext";
 import ReviewDialog from "../../components/review-dialog";
 import { useCart } from "@/app/contexts/CartContext";
 import { initialProducts } from "../../constants/products/constants";
+import Alerts from "../../components/alerts";
 
 
 // Individual product page accessed at /products/[id]
@@ -39,6 +40,15 @@ export default function IndividualProduct({params}) {
     rating: 0
   });
 
+  // State to open or close the alert
+  const [openAlert, setOpenAlert] = useState(false);
+
+  // Alert state to show messages to the user when adding a review or product to the cart
+  const [alert, setAlert] = useState({
+    message: "",
+    severity: ""
+  });
+
   // Find the reviews for the current product
   const productReviews = reviews.filter((r) => r.product === params.id);
 
@@ -47,9 +57,15 @@ export default function IndividualProduct({params}) {
   const handleIncrement = () => setCount(count + 1);
   const handleDecrement = () => setCount(count > 0 ? count - 1 : 0);
 
+  // Function to add the product to the cart with the selected qty
   const handleAddToCart = () => {
     // Add qty to cart
     addToCart(product, count);
+    setAlert({
+      message: 'Product added to cart',
+      severity: 'success'
+    });
+    setOpenAlert(true); // Open the alert
   };
 
   // State to open or close the review dialog
@@ -165,6 +181,14 @@ export default function IndividualProduct({params}) {
       {/* REVIEW DIALOG FOR CREATING A REVIEW */}
       <ReviewDialog  open={openDialog} setOpen={setOpenDialog} review={review} 
         setReview={setReview} reviews={reviews} addReview={addReview} productId={productId}
+        setAlert={setAlert} setOpenAlert={setOpenAlert}
+      />
+
+      {/* ALERT */}
+      <Alerts 
+        open={openAlert}
+        setOpen={setOpenAlert}
+        alert={alert}
       />
     </Container>
   );

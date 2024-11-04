@@ -6,8 +6,18 @@ import { initialCard } from "@/app/constants/payment/constants";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CardDialog from "@/app/components/card-dialog";
+import Alerts from "@/app/components/alerts";
 
 export default function paymentMethods(){
+
+    // State to open or close the alert
+    const [openAlert, setOpenAlert] = useState(false);
+
+    // Alert state to show messages to the user when adding a review or product to the cart
+    const [alert, setAlert] = useState({
+        message: "",
+        severity: ""
+    });
 
     const [cardList, setCardList] = useState(initialCard);
     const [action, setAction] = useState("");
@@ -51,7 +61,7 @@ export default function paymentMethods(){
                         Your Payments Methods
                     </Typography>
                     {cardList.map(card => (
-                      <Grid container justifyContent="space-between" sx={{mb:3}}>
+                      <Grid container justifyContent="space-between" sx={{mb:3}} key={card.id}>
                         <Box>
                           <Typography variant="h5">
                               {card.alias}
@@ -102,6 +112,13 @@ export default function paymentMethods(){
               setCard={setCard}
               cardList={cardList}
               setCardList={setCardList}
+              setAlert={setAlert}
+              setOpenAlert={setOpenAlert}
+            />
+            <Alerts 
+                open={openAlert}
+                setOpen={setOpenAlert}
+                alert={alert}
             />
         </Container>
     )

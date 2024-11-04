@@ -42,7 +42,7 @@ export default function CategoriesManager() {
     { id: 'child', label: 'Child' }
   ]);
 
-  // Estado para productos
+  // State for categories
   const [products, setProducts] = useState(
     initialProducts.map(product => ({
       ...product,
@@ -50,12 +50,12 @@ export default function CategoriesManager() {
     }))
   );
 
-  // Estados para diálogos
+  // EStates for dialogs
   const [openProductDialog, setOpenProductDialog] = useState(false);
   const [openCategoryDialog, setOpenCategoryDialog] = useState(false);
   const [editMode, setEditMode] = useState(false);
   
-  // Estados para elementos actuales
+  // Current elements states
   const [currentProduct, setCurrentProduct] = useState({
     id: '',
     name: '',
@@ -69,14 +69,14 @@ export default function CategoriesManager() {
     label: ''
   });
 
-  // Estado para notificaciones
+  // Notification state
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: '',
     severity: 'success'
   });
 
-  // Manejadores para diálogo de categorías
+  // Handlers for category dialog
   const handleOpenCategoryDialog = (mode, category = null) => {
     setEditMode(mode === 'edit');
     if (category) {
@@ -102,7 +102,7 @@ export default function CategoriesManager() {
     if (!currentCategory.label) {
       setSnackbar({
         open: true,
-        message: 'Por favor ingresa un nombre para la categoría',
+        message: 'Please enter a name for the category',
         severity: 'error'
       });
       return;
@@ -123,20 +123,20 @@ export default function CategoriesManager() {
 
     setSnackbar({
       open: true,
-      message: editMode ? 'Categoría actualizada exitosamente' : 'Categoría agregada exitosamente',
+      message: editMode ? 'Category updated successfully' : 'Category added successfully',
       severity: 'success'
     });
     handleCloseCategoryDialog();
   };
 
   const handleDeleteCategory = (categoryId) => {
-    // Eliminar la categoría y sus productos
+ // Delete the category and its products
     setCategories(prev => prev.filter(cat => cat.id !== categoryId));
     setProducts(prev => prev.filter(prod => prod.category !== categoryId));
     
     setSnackbar({
       open: true,
-      message: 'Categoría y sus productos eliminados exitosamente',
+      message: 'Category and its products deleted successfully',
       severity: 'success'
     });
   };
@@ -195,7 +195,7 @@ export default function CategoriesManager() {
     if (!currentProduct.name || !currentProduct.price) {
       setSnackbar({
         open: true,
-        message: 'Por favor completa todos los campos requeridos',
+        message: 'Please complete all required fields',
         severity: 'error'
       });
       return;
@@ -218,7 +218,7 @@ export default function CategoriesManager() {
 
     setSnackbar({
       open: true,
-      message: editMode ? 'Producto actualizado exitosamente' : 'Producto agregado exitosamente',
+      message: editMode ? 'Product updated successfully' : 'Product added successfully',
       severity: 'success'
     });
     handleCloseProductDialog();
@@ -228,7 +228,7 @@ export default function CategoriesManager() {
     setProducts(prev => prev.filter(product => product.id !== productId));
     setSnackbar({
       open: true,
-      message: 'Producto eliminado exitosamente',
+      message: 'Product deleted successfully',
       severity: 'success'
     });
   };
@@ -275,6 +275,10 @@ export default function CategoriesManager() {
                 <Button
                   variant="contained"
                   startIcon={<EditIcon />}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleOpenCategoryDialog('edit', category);
+                  }}
                   size="small"
                   sx={{ mr: 1 }}
                 >
@@ -356,17 +360,17 @@ export default function CategoriesManager() {
         </Accordion>
       ))}
 
-      {/* Diálogo para Agregar/Editar Categoría */}
+      {/* Dialog to Add/Edit Category*/}
       <Dialog open={openCategoryDialog} onClose={handleCloseCategoryDialog}>
         <DialogTitle>
-          {editMode ? 'Editar Categoría' : 'Nueva Categoría'}
+          {editMode ? 'Edit Category' : 'New Category'}
         </DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             margin="dense"
             name="label"
-            label="Nombre de la Categoría"
+            label="Category Name"
             type="text"
             fullWidth
             value={currentCategory.label}
@@ -382,17 +386,17 @@ export default function CategoriesManager() {
         </DialogActions>
       </Dialog>
 
-      {/* Diálogo para Agregar/Editar Producto */}
+      {/* Dialog to Add/Edit Product */}
       <Dialog open={openProductDialog} onClose={handleCloseProductDialog}>
         <DialogTitle>
-          {editMode ? 'Editar Producto' : 'Nuevo Producto'}
+          {editMode ? 'Edit Product' : 'New Product'}
         </DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             margin="dense"
             name="name"
-            label="Nombre del Producto"
+            label="Product Name"
             type="text"
             fullWidth
             value={currentProduct.name}
@@ -402,13 +406,13 @@ export default function CategoriesManager() {
           <TextField
             margin="dense"
             name="price"
-            label="Precio"
+            label="price"
             type="text"
             fullWidth
             value={currentProduct.price}
             onChange={(e) => handleInputChange(e, 'product')}
             sx={{ mb: 2 }}
-            helperText="Formato: $1,000.00 MXN"
+            helperText="Format: $1,000.00 MXN"
           />
         </DialogContent>
         <DialogActions>
@@ -419,7 +423,7 @@ export default function CategoriesManager() {
         </DialogActions>
       </Dialog>
 
-      {/* Snackbar para notificaciones */}
+      {/* Snackbar for notifications */}
       <Snackbar
         open={snackbar.open}
         autoHideDuration={6000}

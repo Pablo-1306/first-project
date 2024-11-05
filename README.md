@@ -18,8 +18,8 @@ Our platform, developed with React and Material UI, offers a unique shopping exp
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/your-username/your-project.git
-   cd your-project
+   git clone https://github.com/Pablo-1306/first-project.git
+   cd first-project
    ```
 2. **Prerequisites**
    Docker installed and running.

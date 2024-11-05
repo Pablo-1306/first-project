@@ -19,7 +19,7 @@ import { useAuth } from '../contexts/SessionContext';
 
 export default function LoginPage() {
   
-  const { currentUser, users, setUsers, setGlobalCurrentUser, logout} = useAuth();  // Accedemos a la función login del contexto
+  const { currentUser, users, setUsers, setGlobalCurrentUser, logout, adminUsers, setAdminUsers, removeUser} = useAuth();  // Accedemos a la función login del contexto
   var edited = false
   const [showPassword, setShowPassword] = React.useState(false);
   const [open, setOpen] = React.useState(false)
@@ -41,6 +41,9 @@ export default function LoginPage() {
   const editUser = () => {
     try {
         setUsers(users.map((user) => (user.email === currentUser.email ? (editedUser, edited = true) : user)));
+        if(!edited){
+            setAdminUsers(adminUsers.map((adminUser) => (adminUser.email === currentUser.email ? (editedUser, edited = true) : adminUser)));
+        }
         setAlertConfig({
             severity: 'success',
             message: 'Profile edited'
@@ -56,7 +59,7 @@ export default function LoginPage() {
 
   const deleteUser = () => {
     try {
-        setUsers(users.filter((row) => row.email !== currentUser.email));
+        removeUser(currentUser)
         setAlertConfig({
         message: "Account deleted successfully",
         severity: "success",

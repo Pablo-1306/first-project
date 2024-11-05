@@ -26,8 +26,12 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(false);
   };
 
+  const removeUser = (remove_user) => {
+    setUsers((users) => users.filter((user) => user.email !== remove_user.email));
+  };
+
   return (
-    <AuthContext.Provider value={{ isAdminUser, isAuthenticated, users, adminUsers, login, logout, setUsers, setAdminUsers, currentUser, setGlobalCurrentUser}}>
+    <AuthContext.Provider value={{ isAdminUser, isAuthenticated, users, adminUsers, currentUser, login, logout, setUsers, setAdminUsers, setGlobalCurrentUser, removeUser}}>
       {children}
     </AuthContext.Provider>
   );

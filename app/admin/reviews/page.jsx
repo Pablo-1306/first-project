@@ -29,10 +29,10 @@ export default function Reviews() {
 
                     <Grid container sx={{mt: 8}}>
                         
-                    <Grid size={{md: 3}}>
+                    <Grid size={{md: 4}}>
                         <Button 
                         component={Link}
-                        href="#"
+                        href="/admin/inventory"
                         size="large" 
                         sx={{ bgcolor: theme.palette.secondary.main }}
                         >
@@ -40,7 +40,7 @@ export default function Reviews() {
                         </Button>
                     </Grid>
 
-                    <Grid size={{md: 3}}>
+                    <Grid size={{md: 4}}>
                         <Button 
                         component={Link}
                         href="/admin/categories"
@@ -51,18 +51,7 @@ export default function Reviews() {
                         </Button>
                     </Grid>
 
-                    <Grid size={{md: 3}}>
-                        <Button 
-                        component={Link}
-                        href="/admin/reviews"
-                        size="large" 
-                        sx={{ bgcolor: theme.palette.secondary.main }}
-                        >
-                        Reviews
-                        </Button>
-                    </Grid>
-
-                    <Grid size={{md: 3}}>
+                    <Grid size={{md: 4}}>
                         <Button 
                         component={Link}
                         href="/admin/orders"

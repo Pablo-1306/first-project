@@ -7,6 +7,7 @@ import { ReviewProvider } from "./contexts/ReviewContext";
 import { CartProvider } from "./contexts/CartContext";
 import { AuthProvider } from "./contexts/SessionContext";
 import { CategoryProvider } from "./contexts/category-context";
+import { OrderProvider } from "./contexts/OrderContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -37,24 +38,26 @@ export default function RootLayout({ children }) {
       >
         <ThemeProvider theme={theme}>
           <AuthProvider>
-          <CategoryProvider>
-            <ReviewProvider>
-              <CartProvider>
-                <CssBaseline />
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    minHeight: "100vh",
-                  }}
-                >
-                  <AppbarGlobal />
-                  {children}
-                  <FooterGlobal />
-                </Box>
-              </CartProvider>
-            </ReviewProvider>
-          </CategoryProvider>
+            <CategoryProvider>
+              <ReviewProvider>
+                <OrderProvider>
+                  <CartProvider>
+                    <CssBaseline />
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        minHeight: "100vh",
+                      }}
+                    >
+                      <AppbarGlobal />
+                      {children}
+                      <FooterGlobal />
+                    </Box>
+                  </CartProvider>
+                </OrderProvider>
+              </ReviewProvider>
+            </CategoryProvider>
           </AuthProvider>
         </ThemeProvider>
       </body>

@@ -4,6 +4,7 @@ import { Box, Button, Container, Divider, Typography, IconButton, useTheme } fro
 import Grid from "@mui/material/Grid2";
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import { useReviews } from "@/app/contexts/ReviewContext";
+import Link from "next/link";
 
 // Reviews page accessed at /admin/reviews
 export default function Reviews() {
@@ -27,22 +28,50 @@ export default function Reviews() {
                     </Typography>
 
                     <Grid container sx={{mt: 8}}>
-                        <Grid size={{md: 4}}>
-                            <Button size="large" sx={{ bgcolor: theme.palette.secondary.main }}>
-                                Inventory
-                            </Button>
-                        </Grid>
+                        
+                    <Grid size={{md: 3}}>
+                        <Button 
+                        component={Link}
+                        href="#"
+                        size="large" 
+                        sx={{ bgcolor: theme.palette.secondary.main }}
+                        >
+                        Inventory
+                        </Button>
+                    </Grid>
 
-                        <Grid size={{md: 4}}>
-                            <Button size="large" sx={{ bgcolor: theme.palette.secondary.main }}>
-                                Orders
-                            </Button>
-                        </Grid>
-                        <Grid size={{md: 4}}>
-                            <Button size="large" sx={{ bgcolor: theme.palette.secondary.main }}>
-                                Categories
-                            </Button>
-                        </Grid>
+                    <Grid size={{md: 3}}>
+                        <Button 
+                        component={Link}
+                        href="/admin/categories"
+                        size="large" 
+                        sx={{ bgcolor: theme.palette.secondary.main }}
+                        >
+                        Categories
+                        </Button>
+                    </Grid>
+
+                    <Grid size={{md: 3}}>
+                        <Button 
+                        component={Link}
+                        href="/admin/reviews"
+                        size="large" 
+                        sx={{ bgcolor: theme.palette.secondary.main }}
+                        >
+                        Reviews
+                        </Button>
+                    </Grid>
+
+                    <Grid size={{md: 3}}>
+                        <Button 
+                        component={Link}
+                        href="/admin/orders"
+                        size="large"
+                        sx={{ bgcolor: theme.palette.secondary.main }}
+                        >
+                        Orders
+                        </Button>
+                    </Grid>
 
                     </Grid>
                 </Box>

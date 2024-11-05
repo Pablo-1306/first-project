@@ -30,7 +30,14 @@ export default function paymentMethods(){
         year: "",
         cvv: ""
     })
-    const deleteCard = (id) => setCardList(cardList.filter(card => card.id !== id))
+    const deleteCard = (id) => {
+        setCardList(cardList.filter(card => card.id !== id))
+        setAlert({
+            message: "Card deleted succesfully",
+            severity: "warning"
+        })
+        setOpenAlert(true)
+    }
     const handleCard = ({action, card}) => {
         setAction(action)
         setOpenCardDialog(true)

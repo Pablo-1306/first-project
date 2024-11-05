@@ -33,7 +33,7 @@ export default function AppbarGlobal() {
     {label: 'Sign Up', icon: <PersonAddAlt1Icon sx={{width:'100px', height:'100px'}}/>, href: "/register"}
   ]
   const LogedOptions = [
-    {label: 'Edit profile', icon: <EditIcon sx={{width:'100px', height:'100px'}}/>, href: "/edit-profile"},
+    {label: 'Edit', icon: <EditIcon sx={{width:'100px', height:'100px'}}/>, href: "/edit-profile"},
     {label: 'Logout', icon: <LogoutIcon sx={{width:'100px', height:'100px'}}/>, href: "/"}
   ]
 

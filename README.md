@@ -31,13 +31,13 @@ Our platform, developed with React and Material UI, offers a unique shopping exp
 1. **Build the Docker image from the project directory:**
 
 ```bash
-  docker build -t temporal-ui:v1.0.0 .
+  docker build -t atemporal-ui:v1.0.0 .
 ```
 
 2. **Run the Docker Container:**
 
 ```bash
-  docker run --name atemporal-ui -d -p r000:3000 atemporal-ui:v1.0.0
+  docker run --name atemporal-ui -d -p 3000:3000 atemporal-ui:v1.0.0
 ```
 
 3. **Access the Application**

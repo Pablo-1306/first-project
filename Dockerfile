@@ -1,17 +1,17 @@
 FROM node:22.8.0-alpine3.20
 
-RUN addgroup -g 1001 bookshelf && adduser -D -u 1001 -G bookshelf bookshelf
+RUN addgroup -g 1001 atemporal && adduser -D -u 1001 -G atemporal atemporal
 
 WORKDIR /app
 
-COPY --chown=bookshelf .next/standalone ./
-COPY --chown=bookshelf .next/static ./.next/static
-COPY --chown=bookshelf public ./public
+COPY --chown=atemporal .next/standalone ./
+COPY --chown=atemporal .next/static ./.next/static
+COPY --chown=atemporal public ./public
 
 ENV NODE_ENV=production
 ENV PORT=3000
 
-USER bookshelf
+USER atemporal
 
 EXPOSE 3000
 

@@ -43,14 +43,14 @@ export const initialProducts = [
   },
   {
     id: "7",
-    name: "Pink Scarf",
+    name: "Orange Hat",
     price: "$800.00 MXN",
     image: "/shirt-test.jpeg",
     category: "Women",
   },
   {
     id: "8",
-    name: "Orange Hat",
+    name: "Brown Shoes",
     price: "$1,100.00 MXN",
     image: "/shirt-test.jpeg",
     category: "Men",

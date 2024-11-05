@@ -25,6 +25,7 @@ import Alerts from "@/app/components/alerts";
 import CategoryDialog from "@/app/components/category-dialog";
 import { useCategories } from "@/app/contexts/category-context";
 import Link from "next/link";
+import { useProducts } from "@/app/contexts/ProductContext";
 
 export default function CategoriesManager() {
   const theme = useTheme();
@@ -32,8 +33,8 @@ export default function CategoriesManager() {
   // Access to list of categories and CREATE, UPDATE and DELETE functions from the CategoryContext
   const { categories, addCategory, editCategory, deleteCategory } = useCategories();
 
-  // State for products DELETE WHEN PRODUCTS CONTEXT
-  const [products, setProducts] = useState(initialProducts);
+  // Import products from context ProductsContext
+  const {products} = useProducts();
 
   // State to open or close the alert
   const [openAlert, setOpenAlert] = useState(false);
@@ -119,10 +120,10 @@ export default function CategoriesManager() {
 
             <Grid container sx={{mt: 8}}>
                 
-            <Grid size={{md: 3}}>
+            <Grid size={{md: 4}}>
                     <Button 
                       component={Link}
-                      href="#"
+                      href="/admin/inventory"
                       size="large" 
                       sx={{ bgcolor: theme.palette.secondary.main }}
                     >
@@ -130,18 +131,7 @@ export default function CategoriesManager() {
                     </Button>
                 </Grid>
 
-                <Grid size={{md: 3}}>
-                    <Button 
-                      component={Link}
-                      href="/admin/categories"
-                      size="large" 
-                      sx={{ bgcolor: theme.palette.secondary.main }}
-                    >
-                      Categories
-                    </Button>
-                </Grid>
-
-                <Grid size={{md: 3}}>
+                <Grid size={{md: 4}}>
                     <Button 
                       component={Link}
                       href="/admin/reviews"
@@ -152,7 +142,7 @@ export default function CategoriesManager() {
                     </Button>
                 </Grid>
 
-                <Grid size={{md: 3}}>
+                <Grid size={{md: 4}}>
                     <Button 
                       component={Link}
                       href="/admin/orders"

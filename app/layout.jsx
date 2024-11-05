@@ -22,8 +22,8 @@ const geistMono = localFont({
 });
 
 export const metadata = {
-  title: "EduTrack",
-  description: "Edu Track App",
+  title: "Atemporal",
+  description: "Clothing for the future",
 };
 
 export default function RootLayout({ children }) {

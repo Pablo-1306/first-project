@@ -81,7 +81,7 @@ export default function Home() {
                 sx={{
                   width: "150px",
                   height: "150px",
-                  color: theme.palette.third.main,
+                  color: theme.palette.secondary.main,
                 }}
               />
             </Box>
@@ -103,7 +103,7 @@ export default function Home() {
                 sx={{
                   width: "150px",
                   height: "150px",
-                  color: theme.palette.third.main,
+                  color: theme.palette.secondary.main,
                 }}
               />
             </Box>
@@ -125,7 +125,7 @@ export default function Home() {
                 sx={{
                   width: "150px",
                   height: "150px",
-                  color: theme.palette.third.main,
+                  color: theme.palette.secondary.main,
                 }}
               />
             </Box>
@@ -149,7 +149,7 @@ export default function Home() {
                 sx={{
                   width: "150px",
                   height: "150px",
-                  color: theme.palette.third.main,
+                  color: theme.palette.secondary.main,
                 }}
               />
             </Box>
@@ -171,7 +171,7 @@ export default function Home() {
                 sx={{
                   width: "150px",
                   height: "150px",
-                  color: theme.palette.third.main,
+                  color: theme.palette.secondary.main,
                 }}
               />
             </Box>
@@ -193,7 +193,7 @@ export default function Home() {
                 sx={{
                   width: "150px",
                   height: "150px",
-                  color: theme.palette.third.main,
+                  color: theme.palette.secondary.main,
                 }}
               />
             </Box>

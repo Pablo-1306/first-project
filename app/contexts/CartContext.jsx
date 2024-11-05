@@ -10,7 +10,7 @@ const CartContext = createContext();
 export const useCart = () => useContext(CartContext);
 
 export const CartProvider = ({ children }) => {
-  const { createOrder } = useOrder(); 
+  const { createOrder } = useOrder();
   const [cart, setCart] = useState([]);
   const [alert, setAlert] = useState({ message: "", severity: "success" });
   const [open, setOpen] = useState(false);
@@ -27,7 +27,9 @@ export const CartProvider = ({ children }) => {
       if (existingProduct) {
         showAlert("Quantity updated successfully", "info");
         return prevCart.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + quantity }
+            : item,
         );
       }
       showAlert("Product added to cart successfully", "success");
@@ -52,12 +54,20 @@ export const CartProvider = ({ children }) => {
     } else {
       createOrder(cart);
       showAlert("Order created successfully!", "success");
-      setCart([]); 
+      setCart([]);
     }
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, createOrder: handleCreateOrder }}>
+    <CartContext.Provider
+      value={{
+        cart,
+        addToCart,
+        removeFromCart,
+        clearCart,
+        createOrder: handleCreateOrder,
+      }}
+    >
       {children}
       <Alerts open={open} setOpen={setOpen} alert={alert} setAlert={setAlert} />
     </CartContext.Provider>

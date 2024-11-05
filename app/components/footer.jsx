@@ -70,7 +70,7 @@ export default function FooterGlobal() {
                 >
                   <Typography
                     component={Link}
-                    href="/about"
+                    href="/about-us"
                     color={theme.palette.primary.main}
                     sx={{ textDecoration: "none" }}
                   >
@@ -78,7 +78,7 @@ export default function FooterGlobal() {
                   </Typography>
                   <Typography
                     component={Link}
-                    href="/contact"
+                    href="/"
                     color={theme.palette.primary.main}
                     sx={{ ml: 5, textDecoration: "none" }}
                   >
@@ -87,7 +87,7 @@ export default function FooterGlobal() {
                 </Box>
                 <Typography
                   component={Link}
-                  href="/shipment"
+                  href="/"
                   color={theme.palette.primary.main}
                   sx={{ mb: 3, textDecoration: "none", display: "block" }}
                 >
@@ -95,7 +95,7 @@ export default function FooterGlobal() {
                 </Typography>
                 <Typography
                   component={Link}
-                  href="/faq"
+                  href="/"
                   color={theme.palette.primary.main}
                   sx={{ mb: 3, textDecoration: "none", display: "block" }}
                 >
@@ -103,7 +103,7 @@ export default function FooterGlobal() {
                 </Typography>
                 <Typography
                   component={Link}
-                  href="/terms"
+                  href="/"
                   color={theme.palette.primary.main}
                   sx={{ mb: 3, textDecoration: "none", display: "block" }}
                 >

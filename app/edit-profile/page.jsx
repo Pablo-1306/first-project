@@ -8,7 +8,8 @@ import {
   TextField, 
   Button, 
   Link,
-  Paper
+  Paper,
+  useTheme
 } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -18,6 +19,8 @@ import { useAuth } from '../contexts/SessionContext';
 
 
 export default function LoginPage() {
+
+  const theme = useTheme();
   
   const { currentUser, users, setUsers, setGlobalCurrentUser, logout, adminUsers, setAdminUsers, removeUser} = useAuth();  // Accedemos a la función login del contexto
   var edited = false
@@ -28,9 +31,11 @@ export default function LoginPage() {
     severity: '',
     message: ''
   })
-
+  
+  // Function to show or hide the password
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
+  // Function to show the input values the user is typing
   const handleUserInfo = (event) => {
     setEditedCurrentUser({
       ...editedUser,
@@ -38,6 +43,7 @@ export default function LoginPage() {
     });
   };
 
+  // Function to edit the user
   const editUser = () => {
     try {
         setUsers(users.map((user) => (user.email === currentUser.email ? (editedUser, edited = true) : user)));
@@ -57,6 +63,7 @@ export default function LoginPage() {
     }
   }
 
+  // Function to delete the user
   const deleteUser = () => {
     try {
         removeUser(currentUser)
@@ -183,6 +190,14 @@ export default function LoginPage() {
               {showPassword ? <VisibilityOff /> : <Visibility />}
             </IconButton>
           </Box>
+          <Button component={Link} href='/sales/payment'
+            sx={{
+                backgroundColor: theme.palette.secondary.main,
+                mr: 2
+            }}
+          >
+            Payment Methods
+          </Button>
           <Button 
             onClick={deleteUser}
             sx={{
@@ -190,7 +205,7 @@ export default function LoginPage() {
             }}
             href='/'
           >
-            Errase Acount
+            Erase Acount
           </Button>
           <Button
             type="submit"

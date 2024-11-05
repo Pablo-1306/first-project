@@ -133,7 +133,7 @@ export default function AppbarGlobal() {
             ml: 2
           }}
         >
-          EduTrack
+          Atemporal
         </Typography>
 
         <Box sx={{ mr: 1, ml: 3, display: "block" }}>

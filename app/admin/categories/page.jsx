@@ -24,6 +24,7 @@ import { initialProducts } from '../../constants/products/constants';
 import Alerts from "@/app/components/alerts";
 import CategoryDialog from "@/app/components/category-dialog";
 import { useCategories } from "@/app/contexts/category-context";
+import Link from "next/link";
 
 export default function CategoriesManager() {
   const theme = useTheme();
@@ -117,20 +118,48 @@ export default function CategoriesManager() {
             </Typography>
 
             <Grid container sx={{mt: 8}}>
-                <Grid size={{md: 4}}>
-                    <Button size="large" sx={{ bgcolor: theme.palette.secondary.main }}>
-                        Inventory
+                
+            <Grid size={{md: 3}}>
+                    <Button 
+                      component={Link}
+                      href="#"
+                      size="large" 
+                      sx={{ bgcolor: theme.palette.secondary.main }}
+                    >
+                      Inventory
                     </Button>
                 </Grid>
 
-                <Grid size={{md: 4}}>
-                    <Button size="large" sx={{ bgcolor: theme.palette.secondary.main }}>
-                        Orders
+                <Grid size={{md: 3}}>
+                    <Button 
+                      component={Link}
+                      href="/admin/categories"
+                      size="large" 
+                      sx={{ bgcolor: theme.palette.secondary.main }}
+                    >
+                      Categories
                     </Button>
                 </Grid>
-                <Grid size={{md: 4}}>
-                    <Button size="large" sx={{ bgcolor: theme.palette.secondary.main }}>
-                        Reviews
+
+                <Grid size={{md: 3}}>
+                    <Button 
+                      component={Link}
+                      href="/admin/reviews"
+                      size="large" 
+                      sx={{ bgcolor: theme.palette.secondary.main }}
+                    >
+                      Reviews
+                    </Button>
+                </Grid>
+
+                <Grid size={{md: 3}}>
+                    <Button 
+                      component={Link}
+                      href="/admin/orders"
+                      size="large"
+                      sx={{ bgcolor: theme.palette.secondary.main }}
+                    >
+                      Orders
                     </Button>
                 </Grid>
 

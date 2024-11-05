@@ -2,56 +2,62 @@
 
 import React, { createContext, useContext, useState } from "react";
 import Alerts from "../components/alerts";
+import { useOrder } from "./OrderContext";
 
-// Create the context
+// Create context
 const CartContext = createContext();
 
-// Hook to use the context in other components
 export const useCart = () => useContext(CartContext);
 
-// Cart context provider
 export const CartProvider = ({ children }) => {
+  const { createOrder } = useOrder(); 
   const [cart, setCart] = useState([]);
   const [alert, setAlert] = useState({ message: "", severity: "success" });
   const [open, setOpen] = useState(false);
 
-  // Alert for the car
+  // Alerts
   const showAlert = (message, severity = "success") => {
     setAlert({ message, severity });
     setOpen(true);
   };
 
-  // Function to add a product to the cart
   const addToCart = (product, quantity) => {
     setCart((prevCart) => {
       const existingProduct = prevCart.find((item) => item.id === product.id);
       if (existingProduct) {
-        // If the product is already in the cart, update its quantity
         showAlert("Quantity updated successfully", "info");
         return prevCart.map((item) =>
           item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item
         );
       }
-      // If the product is not in the cart, add it
       showAlert("Product added to cart successfully", "success");
       return [...prevCart, { ...product, quantity }];
     });
   };
 
-  // Function to remove a product from the cart
   const removeFromCart = (productId) => {
     showAlert("Product removed from cart successfully", "warning");
     setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
   };
 
-  // Function to clear the cart
   const clearCart = () => {
     setCart([]);
     showAlert("Cart cleared", "warning");
   };
 
+  // Handle for create orders
+  const handleCreateOrder = () => {
+    if (cart.length === 0) {
+      showAlert("Cart is empty. Cannot create an order.", "error");
+    } else {
+      createOrder(cart);
+      showAlert("Order created successfully!", "success");
+      setCart([]); 
+    }
+  };
+
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, createOrder: handleCreateOrder }}>
       {children}
       <Alerts open={open} setOpen={setOpen} alert={alert} setAlert={setAlert} />
     </CartContext.Provider>

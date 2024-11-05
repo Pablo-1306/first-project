@@ -118,11 +118,11 @@ export default function FooterGlobal() {
                                         textDecoration: "none",
                                     }}
                                 >
-                                    TiendaRopa
+                                    Atemporal
                                 </Typography>
 
                                 <Box sx={{mt: 1.5, width: 112}}>
-                                    <IconButton sx={{color: theme.palette.primary.main, p: 0, mr: 2, ml: 1}}>
+                                    <IconButton sx={{color: theme.palette.primary.main, p: 0, mr: 2}}>
                                         <TwitterIcon/>
                                     </IconButton>
                                     <IconButton sx={{color: theme.palette.primary.main, p: 0, mr: 2}}>

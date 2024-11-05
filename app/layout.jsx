@@ -5,6 +5,7 @@ import AppbarGlobal from "./components/appbar";
 import FooterGlobal from "./components/footer";
 import { ReviewProvider } from "./contexts/ReviewContext";
 import { CartProvider } from "./contexts/CartContext";
+import { AuthProvider } from "./contexts/SessionContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -34,22 +35,24 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider theme={theme}>
-          <ReviewProvider>
-            <CartProvider>
-              <CssBaseline />
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  minHeight: "100vh",
-                }}
-              >
-                <AppbarGlobal />
-                {children}
-                <FooterGlobal />
-              </Box>
-            </CartProvider>
-          </ReviewProvider>
+          <AuthProvider>
+            <ReviewProvider>
+              <CartProvider>
+                <CssBaseline />
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    minHeight: "100vh",
+                  }}
+                >
+                  <AppbarGlobal />
+                  {children}
+                  <FooterGlobal />
+                </Box>
+              </CartProvider>
+            </ReviewProvider>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

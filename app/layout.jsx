@@ -5,6 +5,7 @@ import AppbarGlobal from "./components/appbar";
 import FooterGlobal from "./components/footer";
 import { ReviewProvider } from "./contexts/ReviewContext";
 import { CartProvider } from "./contexts/CartContext";
+import { AuthProvider } from "./contexts/SessionContext";
 import { CategoryProvider } from "./contexts/category-context";
 
 const geistSans = localFont({
@@ -35,6 +36,7 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider theme={theme}>
+          <AuthProvider>
           <CategoryProvider>
             <ReviewProvider>
               <CartProvider>
@@ -53,6 +55,7 @@ export default function RootLayout({ children }) {
               </CartProvider>
             </ReviewProvider>
           </CategoryProvider>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

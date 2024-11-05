@@ -1,6 +1,7 @@
 import { Alert, Snackbar } from "@mui/material";
+import CircularProgress from '@mui/material/CircularProgress';
 
-export default function Alerts({open, setOpen, alert, pos}) {
+export default function WaitingAlert({open, setOpen, alert, pos}) {
     const handleClose = () => {
         setOpen(false);
     }
@@ -10,11 +11,10 @@ export default function Alerts({open, setOpen, alert, pos}) {
     return (
         <Snackbar
             open={open}
-            autoHideDuration={3000}
             onClose={handleClose}
             anchorOrigin={{ vertical: vertical, horizontal: 'center' }}
         >
-            <Alert onClose={handleClose} severity={alert.severity} variant="filled">
+            <Alert onClose={handleClose} icon={<CircularProgress disableShrink />} variant="filled">
                 {alert.message}
             </Alert>
         </Snackbar>

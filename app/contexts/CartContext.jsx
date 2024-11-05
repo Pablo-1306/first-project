@@ -2,20 +2,20 @@
 
 import React, { createContext, useContext, useState } from "react";
 import Alerts from "../components/alerts";
-import { useOrder } from "./OrderContext";  // Importa el contexto de órdenes
+import { useOrder } from "./OrderContext";
 
-// Crear el contexto de carrito
+// Create context
 const CartContext = createContext();
 
 export const useCart = () => useContext(CartContext);
 
 export const CartProvider = ({ children }) => {
-  const { createOrder } = useOrder();  // Obtiene createOrder del contexto de órdenes
+  const { createOrder } = useOrder(); 
   const [cart, setCart] = useState([]);
   const [alert, setAlert] = useState({ message: "", severity: "success" });
   const [open, setOpen] = useState(false);
 
-  // Mostrar alerta
+  // Alerts
   const showAlert = (message, severity = "success") => {
     setAlert({ message, severity });
     setOpen(true);
@@ -45,14 +45,14 @@ export const CartProvider = ({ children }) => {
     showAlert("Cart cleared", "warning");
   };
 
-  // Función para crear la orden desde el carrito
+  // Handle for create orders
   const handleCreateOrder = () => {
     if (cart.length === 0) {
       showAlert("Cart is empty. Cannot create an order.", "error");
     } else {
-      createOrder(cart); // Llama a createOrder del contexto de órdenes
+      createOrder(cart);
       showAlert("Order created successfully!", "success");
-      setCart([]); // Limpia el carrito después de crear la orden
+      setCart([]); 
     }
   };
 

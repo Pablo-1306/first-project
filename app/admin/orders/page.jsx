@@ -28,10 +28,10 @@ export default function OrdersPage() {
             </Typography>
 
             <Grid container sx={{mt: 8}}>
-                <Grid size={{md: 3}}>
+                <Grid size={{md: 4}}>
                     <Button 
                       component={Link}
-                      href="#"
+                      href="/admin/inventory"
                       size="large" 
                       sx={{ bgcolor: theme.palette.secondary.main }}
                     >
@@ -39,7 +39,7 @@ export default function OrdersPage() {
                     </Button>
                 </Grid>
 
-                <Grid size={{md: 3}}>
+                <Grid size={{md: 4}}>
                     <Button 
                       component={Link}
                       href="/admin/categories"
@@ -50,7 +50,7 @@ export default function OrdersPage() {
                     </Button>
                 </Grid>
 
-                <Grid size={{md: 3}}>
+                <Grid size={{md: 4}}>
                     <Button 
                       component={Link}
                       href="/admin/reviews"
@@ -58,17 +58,6 @@ export default function OrdersPage() {
                       sx={{ bgcolor: theme.palette.secondary.main }}
                     >
                       Reviews
-                    </Button>
-                </Grid>
-
-                <Grid size={{md: 3}}>
-                    <Button 
-                      component={Link}
-                      href="/admin/orders"
-                      size="large"
-                      sx={{ bgcolor: theme.palette.secondary.main }}
-                    >
-                      Orders
                     </Button>
                 </Grid>
 

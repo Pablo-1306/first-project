@@ -10,6 +10,7 @@ import ReviewDialog from "../../components/review-dialog";
 import { useCart } from "@/app/contexts/CartContext";
 import { initialProducts } from "../../constants/products/constants";
 import Alerts from "../../components/alerts";
+import { useProducts } from "@/app/contexts/ProductContext";
 
 
 // Individual product page accessed at /products/[id]
@@ -20,8 +21,8 @@ export default function IndividualProduct({params}) {
   // Use cart context
   const { addToCart } = useCart();
 
-  // DELETE in the future when added context for products:
-  const [products, setProducts] = useState(initialProducts);
+  // Import products from context ProductsContext
+  const {products} = useProducts();
 
   // Get the id of the product from the URL
   const productId = params.id;

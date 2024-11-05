@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { initialProducts } from "./constants/products/constants";
 import { useCategories } from "./contexts/category-context";
+import { useProducts } from "./contexts/ProductContext";
 
 export default function Home() {
   const theme = useTheme();
@@ -16,7 +17,10 @@ export default function Home() {
   //const [categories, setCategories] = useState(initialCategories);
 
   //Delete in the future when added context for products:
-  const [products, setProducts] = useState(initialProducts);
+  //const [products, setProducts] = useState(initialProducts);
+
+  // Import products from context ProductsContext
+  const {products} = useProducts();
 
   return (
     <Container disableGutters maxWidth='xxl'>

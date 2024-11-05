@@ -8,13 +8,86 @@ import {
   TextField, 
   Button, 
   Link,
-  Paper
+  Paper,
+  IconButton
 } from '@mui/material';
+import { useAuth } from '../contexts/SessionContext';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Alerts from '../components/alerts';
+import { registered_admin_users, registered_users } from '../constants/users/constants';
 
 export default function CreateAccount() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
+
+  const { users, login, setGlobalCurrentUser } = useAuth();  // Accedemos a la función login del contexto
+  var pass = false;
+  var userInfo
+  const [newUser, setNewUser] = React.useState({
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
+  const [open, setOpen] = React.useState(false)
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword2, setShowPassword2] = React.useState(false);
+  const [alertConfig, setAlertConfig] = React.useState({
+    severity: '',
+    message: ''
+  })
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleClickShowPassword2 = () => setShowPassword2((show) => !show);
+
+  const handleUserInfo = (event) => {
+    setNewUser({
+      ...newUser,
+      [event.target.name]: event.target.value,
+    });
   };
+
+  const isAUser = () => {
+    newUser.email !== '' && newUser.password !== '' && newUser.confirmPassword !== '' ? 
+      (
+        userInfo = registered_admin_users.find(({ email }) => email === newUser.email), 
+        userInfo !== undefined ?
+          setAlertConfig({
+            severity: 'error',
+            message: 'The e-mail entered is already registered'
+          })
+        : (
+            userInfo = registered_users.find(({ email }) => email === newUser.email), 
+            userInfo !== undefined ?
+              setAlertConfig({  
+                severity: 'error',
+                message: 'The e-mail entered is already registered'
+              })
+            : (
+              newUser.password === newUser.confirmPassword ?
+                (
+                  users.push(newUser),
+                  setGlobalCurrentUser(newUser),
+                  setAlertConfig({  
+                    severity: 'success',
+                    message: 'Succesfully registered user'
+                  }),
+                pass = true)
+              : setAlertConfig({ 
+                severity: 'error',
+                message: 'Passwords entered do not match'
+              })
+            )
+          )
+      )
+    : (
+      setAlertConfig({
+        severity: 'error',
+        message: 'Please fill in the required fields'
+      })
+    )
+    
+    login(pass, false)
+    setOpen(true)
+
+  }
 
   return (
     <Container 
@@ -51,9 +124,6 @@ export default function CreateAccount() {
         </Typography>
         
         <Box 
-          component="form" 
-          noValidate 
-          onSubmit={handleSubmit}
           sx={{
             '& .MuiTextField-root': { mb: 3 }
           }}
@@ -67,6 +137,8 @@ export default function CreateAccount() {
             autoComplete="email"
             autoFocus
             variant="outlined"
+            value={newUser.email}
+            onChange={handleUserInfo}
             sx={{
               '& .MuiOutlinedInput-root': {
                 '& fieldset': {
@@ -81,52 +153,79 @@ export default function CreateAccount() {
               }
             }}
           />
-          <TextField
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="new-password"
-            variant="outlined"
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                '& fieldset': {
-                  borderColor: 'grey.400',
-                },
-                '&:hover fieldset': {
-                  borderColor: 'grey.700',
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: 'grey.700',
+          <Box>
+
+            <TextField
+              required
+              name="password"
+              label="Password"
+              type={showPassword ? 'text' : 'password'}
+              id="password"
+              autoComplete="new-password"
+              variant="outlined"
+              value={newUser.password}
+              onChange={handleUserInfo}
+              sx={{
+                width: '90%',
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: 'grey.400',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: 'grey.700',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: 'grey.700',
+                  }
                 }
-              }
-            }}
-          />
-          <TextField
-            required
-            fullWidth
-            name="confirmPassword"
-            label="Confirm password"
-            type="password"
-            id="confirmPassword"
-            autoComplete="new-password"
-            variant="outlined"
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                '& fieldset': {
-                  borderColor: 'grey.400',
-                },
-                '&:hover fieldset': {
-                  borderColor: 'grey.700',
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: 'grey.700',
+              }}
+            />
+            <IconButton
+              onClick={handleClickShowPassword}
+              sx={{
+                justifyContent:'center'
+              }}
+              edge="end"
+            >
+              {showPassword ? <VisibilityOff /> : <Visibility />}
+            </IconButton>
+          </Box>
+          <Box>
+            <TextField
+              required
+              name="confirmPassword"
+              label="Confirm password"
+              type={showPassword2 ? 'text' : 'password'}
+              id="confirmPassword"
+              autoComplete="new-password"
+              variant="outlined"
+              value={newUser.confirmPassword}
+              onChange={handleUserInfo}
+              sx={{
+                width: '90%',
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: 'grey.400',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: 'grey.700',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: 'grey.700',
+                  }
                 }
-              }
-            }}
-          />
+              }}
+            />
+            <IconButton
+              onClick={handleClickShowPassword2}
+              sx={{
+                justifyContent:'center'
+              }}
+              edge="end"
+            >
+              {showPassword2 ? <VisibilityOff /> : <Visibility />}
+            </IconButton>
+          </Box>
           <Button
             type="submit"
             fullWidth
@@ -143,6 +242,7 @@ export default function CreateAccount() {
               textTransform: 'none',
               fontSize: '1rem'
             }}
+            onClick={() => isAUser()}
           >
             Login
           </Button>
@@ -163,6 +263,12 @@ export default function CreateAccount() {
           </Link>
         </Box>
       </Paper>
+      <Alerts
+        open= {open}
+        setOpen = {setOpen}
+        alert={alertConfig} 
+        pos={'top'}
+      />
     </Container>
   );
 }

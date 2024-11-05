@@ -1,8 +1,13 @@
-import { CssBaseline, ThemeProvider } from "@mui/material";
+import { Box, CssBaseline, ThemeProvider } from "@mui/material";
 import localFont from "next/font/local";
 import { theme } from "./styles/global-theme";
 import AppbarGlobal from "./components/appbar";
 import FooterGlobal from "./components/footer";
+import { ReviewProvider } from "./contexts/ReviewContext";
+import { CartProvider } from "./contexts/CartContext";
+import { AuthProvider } from "./contexts/SessionContext";
+import { CategoryProvider } from "./contexts/category-context";
+import { OrderProvider } from "./contexts/OrderContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -32,10 +37,28 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <AppbarGlobal />
-          {children}
-          <FooterGlobal />
+          <AuthProvider>
+            <CategoryProvider>
+              <ReviewProvider>
+                <OrderProvider>
+                  <CartProvider>
+                    <CssBaseline />
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        minHeight: "100vh",
+                      }}
+                    >
+                      <AppbarGlobal />
+                      {children}
+                      <FooterGlobal />
+                    </Box>
+                  </CartProvider>
+                </OrderProvider>
+              </ReviewProvider>
+            </CategoryProvider>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

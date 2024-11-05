@@ -8,94 +8,74 @@ import {
   TextField, 
   Button, 
   Link,
-  Paper
+  Paper,
+  useTheme
 } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
-import { registered_admin_users, registered_users } from '../constants/users/constants';
 import Alerts from '../components/alerts';
 import { useAuth } from '../contexts/SessionContext';
 
 
-
 export default function LoginPage() {
+
+  const theme = useTheme();
   
-  const { login, setGlobalCurrentUser} = useAuth();  // Accedemos a la función login del contexto
-  var userInfo;
-  var pass=false;
-  var isAdmin = false;
+  const { currentUser, users, setUsers, setGlobalCurrentUser, logout, adminUsers, setAdminUsers, removeUser} = useAuth();  // Accedemos a la función login del contexto
+  var edited = false
   const [showPassword, setShowPassword] = React.useState(false);
   const [open, setOpen] = React.useState(false)
-  const [currentUser, setCurrentUser] = React.useState({
-    email: '',
-    password: ''
-  });
+  const [editedUser, setEditedCurrentUser] = React.useState(currentUser);
   const [alertConfig, setAlertConfig] = React.useState({
     severity: '',
     message: ''
   })
-
+  
+  // Function to show or hide the password
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
+  // Function to show the input values the user is typing
   const handleUserInfo = (event) => {
-    setCurrentUser({
-      ...currentUser,
+    setEditedCurrentUser({
+      ...editedUser,
       [event.target.name]: event.target.value,
     });
   };
 
-  const isAUser = () => {
-    currentUser.email !== '' && currentUser.password !== '' ? 
-      (
-        userInfo = registered_admin_users.find(({ email }) => email === currentUser.email), 
-        userInfo !== undefined ?
-          currentUser.password === userInfo.password? 
-          (
-            setAlertConfig({
+  // Function to edit the user
+  const editUser = () => {
+    try {
+        setUsers(users.map((user) => (user.email === currentUser.email ? (editedUser, edited = true) : user)));
+        if(!edited){
+            setAdminUsers(adminUsers.map((adminUser) => (adminUser.email === currentUser.email ? (editedUser, edited = true) : adminUser)));
+        }
+        setAlertConfig({
             severity: 'success',
-            message: `Right credentials, welcome ${currentUser.email}`
-            }),
-            pass = true,
-            isAdmin = true,
-            setGlobalCurrentUser(currentUser)
-          )
-          : setAlertConfig({
-            severity: 'error',
-            message: 'Please verify the data entered (email and password).'
-          })
-        : (
-            userInfo = registered_users.find(({ email }) => email === currentUser.email), 
-            userInfo !== undefined ?
-              currentUser.password === userInfo.password? 
-              (
-                setAlertConfig({
-                severity: 'success',
-                message: `Welcome ${currentUser.email}`
-                }),
-                pass = true,
-                setGlobalCurrentUser(currentUser)
-                )
-              : setAlertConfig({
-                severity: 'error',
-                message: 'Please verify the data entered (email and password).'
-              })
-            : setAlertConfig({
-              severity: 'error',
-              message: 'No user with the entered data was found.'
-            })
-          )
-      )
-    : (
-      setAlertConfig({
-        severity: 'error',
-        message: 'Please fill in the required fields'
-      })
-    )
-    
-    login(pass, isAdmin)
-    setOpen(true)
+            message: 'Profile edited'
+        })
+        
+        setOpen(edited)
+        if(edited)
+            setGlobalCurrentUser(editedUser)
+    } catch (error) {
+        console.log(error)
+    }
+  }
 
+  // Function to delete the user
+  const deleteUser = () => {
+    try {
+        removeUser(currentUser)
+        setAlertConfig({
+        message: "Account deleted successfully",
+        severity: "success",
+        });
+        setOpen(true);
+        logout()
+    } catch (error) {
+        console.log(error)
+    }
   }
  
   return (
@@ -129,7 +109,7 @@ export default function LoginPage() {
             fontWeight: 500
           }}
         >
-          Login
+            Edit profile
         </Typography>
         
         <Box
@@ -146,7 +126,7 @@ export default function LoginPage() {
             autoComplete="email"
             autoFocus
             variant="outlined"
-            value={currentUser.email}
+            value={editedUser.email}
             onChange={handleUserInfo}
             sx={{
               '& .MuiOutlinedInput-root': {
@@ -177,7 +157,7 @@ export default function LoginPage() {
               id="password"
               autoComplete="current-password"
               variant="outlined"
-              value={currentUser.password}
+              value={editedUser.password}
               onChange={handleUserInfo}
               sx={{
                 width: '90%',
@@ -210,6 +190,23 @@ export default function LoginPage() {
               {showPassword ? <VisibilityOff /> : <Visibility />}
             </IconButton>
           </Box>
+          <Button component={Link} href='/sales/payment'
+            sx={{
+                backgroundColor: theme.palette.secondary.main,
+                mr: 2
+            }}
+          >
+            Payment Methods
+          </Button>
+          <Button 
+            onClick={deleteUser}
+            sx={{
+                backgroundColor: 'red'
+            }}
+            href='/'
+          >
+            Erase Acount
+          </Button>
           <Button
             type="submit"
             fullWidth
@@ -226,9 +223,9 @@ export default function LoginPage() {
               textTransform: 'none',
               fontSize: '1rem'
             }}
-            onClick={() => isAUser()}
+            onClick={() => editUser()}
           >
-            Login
+            Edit
           </Button>
           <Link 
             href="#" 

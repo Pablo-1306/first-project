@@ -6,10 +6,10 @@ import {
   registered_users,
 } from "../constants/users/constants";
 
-// Creamos el contexto
+// We create the context
 const AuthContext = createContext();
 
-// Proveedor para envolver la aplicación
+// Provider to wrap the application
 export const AuthProvider = ({ children }) => {
   const [isAdminUser, setIsAdminUser] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -17,13 +17,13 @@ export const AuthProvider = ({ children }) => {
   const [adminUsers, setAdminUsers] = useState(registered_admin_users);
   const [currentUser, setGlobalCurrentUser] = useState("");
 
-  // Función para iniciar sesión y establecer si es admin
+  // Function to log in and set if it's an admin
   const login = (auth, isAdmin) => {
     setIsAdminUser(isAdmin);
     setIsAuthenticated(auth);
   };
 
-  // Función para cerrar sesión
+ // Function to log out
   const logout = () => {
     setIsAdminUser(false);
     setIsAuthenticated(false);
@@ -56,5 +56,5 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// Hook personalizado para usar el contexto
+// Custom hook to use the context
 export const useAuth = () => useContext(AuthContext);

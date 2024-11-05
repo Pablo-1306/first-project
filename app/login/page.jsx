@@ -21,7 +21,7 @@ import Alerts from "../components/alerts";
 import { useAuth } from "../contexts/SessionContext";
 
 export default function LoginPage() {
-  const { login, setGlobalCurrentUser } = useAuth(); // Accedemos a la función login del contexto
+  const { login, setGlobalCurrentUser } = useAuth(); // We access the login function from the context
   var userInfo;
   var pass = false;
   var isAdmin = false;

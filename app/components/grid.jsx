@@ -7,6 +7,7 @@ export default function AutoGrid({ requiredSpaces }) {
         <Grid
           size={{ xs: 12, md: 12 / requiredSpaces.length }}
           sx={{ textAlign: "center" }}
+          key={space}
         >
           {space}
         </Grid>

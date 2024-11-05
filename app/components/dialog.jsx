@@ -34,6 +34,7 @@ export default function BookDialog({
               label={req}
               fullWidth
               value={""}
+              key={req}
             />
           ))
         ) : (

@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   Container,
-  Grid,
   IconButton,
   Typography,
 } from "@mui/material";
@@ -14,8 +13,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CardDialog from "@/app/components/card-dialog";
 import Alerts from "@/app/components/alerts";
+import Grid from "@mui/material/Grid2";
 
-export default function paymentMethods() {
+export default function PaymentMethods() {
   // State to open or close the alert
   const [openAlert, setOpenAlert] = useState(false);
 

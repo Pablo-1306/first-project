@@ -1,4 +1,3 @@
-// en constants/products/constants.js
 export const initialProducts = [
     {
       id: '1',

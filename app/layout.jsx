@@ -8,6 +8,7 @@ import { CartProvider } from "./contexts/CartContext";
 import { AuthProvider } from "./contexts/SessionContext";
 import { CategoryProvider } from "./contexts/category-context";
 import { OrderProvider } from "./contexts/OrderContext";
+import { ProductProvider } from "./contexts/ProductContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -38,26 +39,28 @@ export default function RootLayout({ children }) {
       >
         <ThemeProvider theme={theme}>
           <AuthProvider>
-            <CategoryProvider>
-              <ReviewProvider>
-                <OrderProvider>
-                  <CartProvider>
-                    <CssBaseline />
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        minHeight: "100vh",
-                      }}
-                    >
-                      <AppbarGlobal />
-                      {children}
-                      <FooterGlobal />
-                    </Box>
-                  </CartProvider>
-                </OrderProvider>
-              </ReviewProvider>
-            </CategoryProvider>
+            <ProductProvider>
+              <CategoryProvider>
+                <ReviewProvider>
+                  <OrderProvider>
+                    <CartProvider>
+                      <CssBaseline />
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          minHeight: "100vh",
+                        }}
+                      >
+                        <AppbarGlobal />
+                        {children}
+                        <FooterGlobal />
+                      </Box>
+                    </CartProvider>
+                  </OrderProvider>
+                </ReviewProvider>
+              </CategoryProvider>
+            </ProductProvider>	
           </AuthProvider>
         </ThemeProvider>
       </body>

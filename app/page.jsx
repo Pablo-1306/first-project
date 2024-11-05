@@ -4,15 +4,16 @@ import { Box, Container, Divider, Paper, Typography, useTheme } from "@mui/mater
 import Grid from '@mui/material/Grid2';
 import Image from "next/image";
 import Link from "next/link";
-import { initialCategories } from "./constants/categories/constants";
 import { useState } from "react";
 import { initialProducts } from "./constants/products/constants";
+import { useCategories } from "./contexts/category-context";
 
 export default function Home() {
   const theme = useTheme();
 
+  const { categories } = useCategories();
   //Delete in the future when added context for categories:
-  const [categories, setCategories] = useState(initialCategories);
+  //const [categories, setCategories] = useState(initialCategories);
 
   //Delete in the future when added context for products:
   const [products, setProducts] = useState(initialProducts);
@@ -56,7 +57,7 @@ export default function Home() {
               }}
             >
               <Typography component={Link} 
-              href={category.path}
+              href={`/categories/${category.label}`}
               color={theme.palette.text.dark}
               sx={{textDecoration: 'underline'}}
               >

@@ -6,6 +6,7 @@ import FooterGlobal from "./components/footer";
 import { ReviewProvider } from "./contexts/ReviewContext";
 import { CartProvider } from "./contexts/CartContext";
 import { AuthProvider } from "./contexts/SessionContext";
+import { CategoryProvider } from "./contexts/category-context";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -36,6 +37,7 @@ export default function RootLayout({ children }) {
       >
         <ThemeProvider theme={theme}>
           <AuthProvider>
+          <CategoryProvider>
             <ReviewProvider>
               <CartProvider>
                 <CssBaseline />
@@ -52,6 +54,7 @@ export default function RootLayout({ children }) {
                 </Box>
               </CartProvider>
             </ReviewProvider>
+          </CategoryProvider>
           </AuthProvider>
         </ThemeProvider>
       </body>

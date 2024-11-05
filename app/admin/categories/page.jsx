@@ -6,74 +6,53 @@ import {
   Button, 
   Container, 
   Typography, 
-  IconButton, 
   useTheme,
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
+  Divider,
   List,
   ListItem,
   ListItemText,
-  ListItemSecondaryAction,
-  Snackbar,
-  Alert,
-  Grid,
-  Fab
 } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditIcon from '@mui/icons-material/Edit';
-import AddIcon from '@mui/icons-material/Add';
-import { initialProducts } from '../../constants/products/constants';
 import Image from 'next/image';
+import { initialProducts } from '../../constants/products/constants';
+import Alerts from "@/app/components/alerts";
+import CategoryDialog from "@/app/components/category-dialog";
+import { useCategories } from "@/app/contexts/category-context";
 
 export default function CategoriesManager() {
   const theme = useTheme();
   
-  // Estado para categorías
-  const [categories, setCategories] = useState([
-    { id: 'men', label: 'Men' },
-    { id: 'women', label: 'Women' },
-    { id: 'child', label: 'Child' }
-  ]);
+  // Access to list of categories and CREATE, UPDATE and DELETE functions from the CategoryContext
+  const { categories, addCategory, editCategory, deleteCategory } = useCategories();
 
-  // State for categories
-  const [products, setProducts] = useState(
-    initialProducts.map(product => ({
-      ...product,
-      category: 'men'
-    }))
-  );
+  // State for products DELETE WHEN PRODUCTS CONTEXT
+  const [products, setProducts] = useState(initialProducts);
 
-  // EStates for dialogs
-  const [openProductDialog, setOpenProductDialog] = useState(false);
-  const [openCategoryDialog, setOpenCategoryDialog] = useState(false);
-  const [editMode, setEditMode] = useState(false);
-  
-  // Current elements states
-  const [currentProduct, setCurrentProduct] = useState({
-    id: '',
-    name: '',
-    price: '',
-    image: '/shirt-test.jpeg',
-    category: ''
+  // State to open or close the alert
+  const [openAlert, setOpenAlert] = useState(false);
+
+  // Alert state to show messages to the user when adding a review or product to the cart
+  const [alert, setAlert] = useState({
+    message: "",
+    severity: ""
   });
 
+  // Dialogs states for creating/editing categories 
+  const [openCategoryDialog, setOpenCategoryDialog] = useState(false);
+
+  // State to show different titles in Dialog
+  const [editMode, setEditMode] = useState(false);
+
+  // Current category state
   const [currentCategory, setCurrentCategory] = useState({
     id: '',
     label: ''
-  });
-
-  // Notification state
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: '',
-    severity: 'success'
   });
 
   // Handlers for category dialog
@@ -90,6 +69,7 @@ export default function CategoriesManager() {
     setOpenCategoryDialog(true);
   };
 
+  // Handlers close category dialog
   const handleCloseCategoryDialog = () => {
     setOpenCategoryDialog(false);
     setCurrentCategory({
@@ -98,92 +78,17 @@ export default function CategoriesManager() {
     });
   };
 
-  const handleSaveCategory = () => {
-    if (!currentCategory.label) {
-      setSnackbar({
-        open: true,
-        message: 'Please enter a name for the category',
-        severity: 'error'
-      });
-      return;
-    }
-
-    if (editMode) {
-      setCategories(prev => 
-        prev.map(cat => 
-          cat.id === currentCategory.id ? currentCategory : cat
-        )
-      );
-    } else {
-      setCategories(prev => [...prev, {
-        ...currentCategory,
-        id: currentCategory.label.toLowerCase().replace(/\s+/g, '-')
-      }]);
-    }
-
-    setSnackbar({
-      open: true,
-      message: editMode ? 'Category updated successfully' : 'Category added successfully',
-      severity: 'success'
-    });
-    handleCloseCategoryDialog();
-  };
-
+  // Function to delete a category 
   const handleDeleteCategory = (categoryId) => {
- // Delete the category and its products
-    setCategories(prev => prev.filter(cat => cat.id !== categoryId));
-    setProducts(prev => prev.filter(prod => prod.category !== categoryId));
+    deleteCategory(categoryId);
     
-    setSnackbar({
-      open: true,
-      message: 'Category and its products deleted successfully',
+    setAlert({
+      message: 'Category deleted successfully',
       severity: 'success'
     });
   };
 
-  // Manejadores para diálogo de productos
-  const handleOpenProductDialog = (mode, categoryId, product = null) => {
-    setEditMode(mode === 'edit');
-    if (product) {
-      setCurrentProduct(product);
-    } else {
-      setCurrentProduct({
-        id: String(Date.now()),
-        name: '',
-        price: '',
-        image: '/shirt-test.jpeg',
-        category: categoryId
-      });
-    }
-    setOpenProductDialog(true);
-  };
-
-  const handleCloseProductDialog = () => {
-    setOpenProductDialog(false);
-    setCurrentProduct({
-      id: '',
-      name: '',
-      price: '',
-      image: '/shirt-test.jpeg',
-      category: ''
-    });
-  };
-
-  const handleInputChange = (e, type) => {
-    const { name, value } = e.target;
-    if (type === 'category') {
-      setCurrentCategory(prev => ({
-        ...prev,
-        [name]: value
-      }));
-    } else {
-      setCurrentProduct(prev => ({
-        ...prev,
-        [name]: value
-      }));
-    }
-  };
-
+  // Function to give the price input a format
   const formatPrice = (price) => {
     if (!price.startsWith('$')) {
       return `$${price} MXN`;
@@ -191,252 +96,161 @@ export default function CategoriesManager() {
     return price;
   };
 
-  const handleSaveProduct = () => {
-    if (!currentProduct.name || !currentProduct.price) {
-      setSnackbar({
-        open: true,
-        message: 'Please complete all required fields',
-        severity: 'error'
-      });
-      return;
-    }
-
-    const formattedProduct = {
-      ...currentProduct,
-      price: formatPrice(currentProduct.price)
-    };
-
-    if (editMode) {
-      setProducts(prev => 
-        prev.map(product => 
-          product.id === currentProduct.id ? formattedProduct : product
-        )
-      );
-    } else {
-      setProducts(prev => [...prev, formattedProduct]);
-    }
-
-    setSnackbar({
-      open: true,
-      message: editMode ? 'Product updated successfully' : 'Product added successfully',
-      severity: 'success'
-    });
-    handleCloseProductDialog();
-  };
-
-  const handleDeleteProduct = (productId) => {
-    setProducts(prev => prev.filter(product => product.id !== productId));
-    setSnackbar({
-      open: true,
-      message: 'Product deleted successfully',
-      severity: 'success'
-    });
-  };
-
-  const handleCloseSnackbar = () => {
-    setSnackbar(prev => ({
-      ...prev,
-      open: false
-    }));
-  };
-
-  const getProductsByCategory = (categoryId) => {
-    return products.filter(product => product.category === categoryId);
+  // Function to filter products by category
+  const getProductsByCategory = (categoryLabel) => {
+    console.log(products.filter(product => product.category === categoryLabel));
+    return products.filter(product => product.category === categoryLabel);
   };
 
   return (
-    <Container maxWidth="xl">
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+    <Container maxWidth="lg">
+      {/* HEADER */}
+      <Container maxWidth='md'>
+        <Box maxWidth='md'
+          sx={{
+            textAlign: 'center',
+            my: 10
+          }}
+        >
+            <Typography variant="h3">
+                Administrator Page
+            </Typography>
+
+            <Grid container sx={{mt: 8}}>
+                <Grid size={{md: 4}}>
+                    <Button size="large" sx={{ bgcolor: theme.palette.secondary.main }}>
+                        Inventory
+                    </Button>
+                </Grid>
+
+                <Grid size={{md: 4}}>
+                    <Button size="large" sx={{ bgcolor: theme.palette.secondary.main }}>
+                        Orders
+                    </Button>
+                </Grid>
+                <Grid size={{md: 4}}>
+                    <Button size="large" sx={{ bgcolor: theme.palette.secondary.main }}>
+                        Reviews
+                    </Button>
+                </Grid>
+
+            </Grid>
+          </Box>
+      </Container>
+
+      <Divider sx={{bgcolor: theme.palette.secondary.main}} />
+
+      <Container maxWidth='xl' sx={{mt: 8, mb: 12, textAlign: 'center'}} disableGutters>
         <Typography variant="h3">
-          Administrador de Categorías y Productos
+          Categories
         </Typography>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
+
+        <Button 
+          sx={{bgcolor: theme.palette.secondary.main, mt: 4}}
           onClick={() => handleOpenCategoryDialog('add')}
         >
-          Nueva Categoría
+          Add New Category
         </Button>
-      </Box>
-
-      {categories.map((category) => (
-        <Accordion key={category.id} sx={{ mb: 2 }}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            sx={{ bgcolor: theme.palette.grey[100] }}
-          >
-            <Grid container alignItems="center" justifyContent="space-between">
-              <Grid item xs={6}>
-                <Typography variant="h6">
-                  {category.label} ({getProductsByCategory(category.id).length} productos)
-                </Typography>
+      
+        {categories.map((category) => (
+          <Accordion key={category.id} sx={{ mb: 2, mt: 6 }}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              sx={{ bgcolor: theme.palette.grey[100] }}
+            >
+              <Grid container sx={{ width: '100%'}}>
+                <Grid size={{xs: 6}} textAlign='left'>
+                  <Typography variant="h6">
+                    {category.label} ({getProductsByCategory(category.label).length} Products)
+                  </Typography>
+                </Grid>
+                <Grid size={{xs: 6}} textAlign='right'>
+                  <Box >
+                    <Button
+                      variant="contained"
+                      startIcon={<EditIcon />}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleOpenCategoryDialog('edit', category);
+                      }}
+                      size="small"
+                      sx={{ mr: 6 }}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      startIcon={<DeleteOutlinedIcon />}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteCategory(category.id);
+                      }}
+                      size="small"
+                      sx={{ mr: 4 }}
+                    >
+                      Delete
+                    </Button>
+                  </Box>
+                </Grid>
               </Grid>
-              <Grid item xs={6} textAlign="right">
-                <Button
-                  variant="contained"
-                  startIcon={<EditIcon />}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleOpenCategoryDialog('edit', category);
-                  }}
-                  size="small"
-                  sx={{ mr: 1 }}
-                >
-                  Editar
-                </Button>
-                <Button
-                  variant="contained"
-                  color="error"
-                  startIcon={<DeleteOutlinedIcon />}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDeleteCategory(category.id);
-                  }}
-                  size="small"
-                  sx={{ mr: 1 }}
-                >
-                  Eliminar
-                </Button>
-                <Button
-                  variant="contained"
-                  startIcon={<AddIcon />}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleOpenProductDialog('add', category.id);
-                  }}
-                  size="small"
-                >
-                  Agregar Producto
-                </Button>
-              </Grid>
-            </Grid>
-          </AccordionSummary>
-          <AccordionDetails>
-            <List>
-              {getProductsByCategory(category.id).map((product) => (
-                <ListItem
-                  key={product.id}
-                  sx={{
-                    border: '1px solid #ddd',
-                    borderRadius: 1,
-                    mb: 1,
-                    bgcolor: 'background.paper'
-                  }}
-                >
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    width={50}
-                    height={50}
-                    style={{
-                      marginRight: '16px',
-                      objectFit: 'cover',
-                      borderRadius: '4px'
+            </AccordionSummary>
+            <AccordionDetails>
+              <List>
+                {getProductsByCategory(category.label).map((product) => (
+                  <ListItem
+                    key={product.id}
+                    sx={{
+                      border: '1px solid #ddd',
+                      borderRadius: 1,
+                      mb: 1,
+                      bgcolor: 'background.paper'
                     }}
-                  />
-                  <ListItemText
-                    primary={product.name}
-                    secondary={product.price}
-                  />
-                  <ListItemSecondaryAction>
-                    <IconButton
-                      edge="end"
-                      onClick={() => handleOpenProductDialog('edit', category.id, product)}
-                      sx={{ mr: 1 }}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton
-                      edge="end"
-                      onClick={() => handleDeleteProduct(product.id)}
-                    >
-                      <DeleteOutlinedIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              ))}
-            </List>
-          </AccordionDetails>
-        </Accordion>
-      ))}
+                  >
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      width={50}
+                      height={50}
+                      style={{
+                        marginRight: '16px',
+                        objectFit: 'cover',
+                        borderRadius: '4px'
+                      }}
+                    />
+                    <ListItemText
+                      primary={product.name}
+                      secondary={product.price}
+                    />
+                  </ListItem>
+                ))}
+              </List>
+            </AccordionDetails>
+          </Accordion>
+        ))}
+      </Container>
+
 
       {/* Dialog to Add/Edit Category*/}
-      <Dialog open={openCategoryDialog} onClose={handleCloseCategoryDialog}>
-        <DialogTitle>
-          {editMode ? 'Edit Category' : 'New Category'}
-        </DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            name="label"
-            label="Category Name"
-            type="text"
-            fullWidth
-            value={currentCategory.label}
-            onChange={(e) => handleInputChange(e, 'category')}
-            sx={{ mb: 2 }}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseCategoryDialog}>Cancelar</Button>
-          <Button onClick={handleSaveCategory} variant="contained">
-            Guardar
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <CategoryDialog 
+        open={openCategoryDialog}
+        setOpen={setOpenCategoryDialog}
+        onClose={handleCloseCategoryDialog}
+        editMode={editMode}
+        category={currentCategory}
+        setCategory={setCurrentCategory}
+        categories={categories}
+        addCategory={addCategory}
+        editCategory={editCategory}
+        setAlert={setAlert}
+        setOpenAlert={setOpenAlert}
+      />
 
-      {/* Dialog to Add/Edit Product */}
-      <Dialog open={openProductDialog} onClose={handleCloseProductDialog}>
-        <DialogTitle>
-          {editMode ? 'Edit Product' : 'New Product'}
-        </DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            name="name"
-            label="Product Name"
-            type="text"
-            fullWidth
-            value={currentProduct.name}
-            onChange={(e) => handleInputChange(e, 'product')}
-            sx={{ mb: 2 }}
-          />
-          <TextField
-            margin="dense"
-            name="price"
-            label="price"
-            type="text"
-            fullWidth
-            value={currentProduct.price}
-            onChange={(e) => handleInputChange(e, 'product')}
-            sx={{ mb: 2 }}
-            helperText="Format: $1,000.00 MXN"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseProductDialog}>Cancelar</Button>
-          <Button onClick={handleSaveProduct} variant="contained">
-            Guardar
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* Snackbar for notifications */}
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-      >
-        <Alert 
-          onClose={handleCloseSnackbar} 
-          severity={snackbar.severity}
-          sx={{ width: '100%' }}
-        >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
+      <Alerts 
+        open={openAlert}
+        setOpen={setOpenAlert}
+        alert={alert}
+      />
     </Container>
   );
 }

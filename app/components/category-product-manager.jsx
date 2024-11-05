@@ -1,21 +1,22 @@
 "use client";
 
-import { Box, Container, Typography, Grid } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import { initialProducts } from '../constants/products/constants';
 import Image from 'next/image';
 
-export default function CategoryProducts({ categoryId = 'men' }) { 
+export default function CategoryProducts({ categoryId }) { 
   const products = initialProducts.filter(product => product.category === categoryId);
 
   return (
-    <Container maxWidth="xl">
-      <Typography variant="h4" sx={{ mb: 4 }}>
+    <Container maxWidth="xl" sx={{mt: 6, mb: 12}}>
+      <Typography variant="h3" sx={{ mb: 4 }} textAlign='center'>
         {categoryId.charAt(0).toUpperCase() + categoryId.slice(1)} Collection
       </Typography>
 
       <Grid container spacing={3}>
         {products.map((product) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
+          <Grid size={{xs: 12, sm: 6, md: 4}} key={product.id}>
             <Box
               sx={{
                 p: 2,

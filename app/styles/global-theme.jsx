@@ -10,20 +10,20 @@ export const theme = createTheme({
       main: "#000000",
     },
     third: {
-        main: '#2DAFEB',
+      main: "#2DAFEB",
     },
     lighter: {
-        main: '#C5DBEB'
+      main: "#C5DBEB",
     },
-    cards:{
-        main: '#0E4AFA'
+    cards: {
+      main: "#0E4AFA",
     },
-    footer :{
-        main: "#000"
+    footer: {
+      main: "#000",
     },
     text: {
       dark: "#000000",
-      light: "#FFFFFF"
+      light: "#FFFFFF",
     },
   },
   typography: {

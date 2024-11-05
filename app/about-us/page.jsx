@@ -1,6 +1,5 @@
 import { Container, Paper } from "@mui/material";
 
-
 export default function AboutUs() {
   return (
     <Container maxWidth="xl" disableGutters>
@@ -11,12 +10,12 @@ export default function AboutUs() {
           maxWidth: "60%",
           margin: "0 auto",
           height: "400px",
-          alignContent:'center',
-          justifyContent:'center'
+          alignContent: "center",
+          justifyContent: "center",
         }}
       >
         In progress
       </Paper>
-      </Container>
+    </Container>
   );
 }

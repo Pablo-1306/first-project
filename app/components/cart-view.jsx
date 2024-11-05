@@ -17,20 +17,27 @@ export default function CartView() {
       ) : (
         <Box>
           {cart.map((item) => (
-            <Box key={item.id} sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+            <Box
+              key={item.id}
+              sx={{ display: "flex", alignItems: "center", mb: 2 }}
+            >
               <Typography variant="body1" sx={{ flex: 1 }}>
                 {item.name}
               </Typography>
               <Typography variant="body1" sx={{ flex: 1 }}>
                 Quantity: {item.quantity}
               </Typography>
-              <Button variant="contained" color="secondary" onClick={() => removeFromCart(item.id)}>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => removeFromCart(item.id)}
+              >
                 Remove
               </Button>
             </Box>
           ))}
           <Divider sx={{ my: 2 }} />
-          
+
           {/* Clear Cart and Buy Cart */}
           <Box display="flex" justifyContent="space-between">
             <Button variant="outlined" color="secondary" onClick={clearCart}>

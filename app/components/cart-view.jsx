@@ -1,9 +1,40 @@
 import React from "react";
 import { useCart } from "../contexts/CartContext";
 import { Box, Typography, Button, Divider } from "@mui/material";
+import axios from "axios";
 
 export default function CartView() {
-  const { cart, removeFromCart, clearCart, createOrder } = useCart();
+  const { cart, removeFromCart, clearCart } = useCart();
+
+  const createOrder = async () => {
+    if (cart.length === 0) {
+      alert("Cart is empty. Cannot create an order.");
+      return;
+    }
+  
+    try {
+      const cleanCart = cart.map(({ id, name, price, quantity }) => ({
+        id,
+        name,
+        price: parseFloat(price),
+        quantity,
+      }));
+  
+      console.log("Cleaned cart:", cleanCart);
+  
+      const response = await axios.post("http://127.0.0.1:5000/api/v1/orders", {
+        customer_email: "customer@example.com",
+        products: cleanCart,
+      });
+
+      console.log("Order created:", response.data);
+      clearCart();
+      alert("Order created successfully!");
+    } catch (err) {
+      console.error("Failed to create order:", err.message);
+      alert("Failed to create order. Please try again.");
+    }
+  };  
 
   return (
     <Box sx={{ padding: 4 }}>

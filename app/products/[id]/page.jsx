@@ -66,13 +66,45 @@ export default function IndividualProduct({ params }) {
 
   // Function to add the product to the cart with the selected qty
   const handleAddToCart = () => {
-    // Add qty to cart
-    addToCart(product, count);
+    if (!product || !product.price) {
+      setAlert({
+        message: "Product price is missing. Cannot add to cart.",
+        severity: "error",
+      });
+      setOpenAlert(true);
+      return;
+    }
+
+    // Format
+    const cleanPrice = parseFloat(
+      product.price.replace(/[$,MXN]/g, "").trim()
+    );
+
+    // Error
+    if (isNaN(cleanPrice)) {
+      setAlert({
+        message: "Product price is invalid. Cannot add to cart.",
+        severity: "error",
+      });
+      setOpenAlert(true);
+      return;
+    }
+  
+    // Object
+    const cartItem = {
+      id: product.id,
+      name: product.name,
+      price: cleanPrice,
+      quantity: count,
+    };
+  
+    // Add to cart
+    addToCart(cartItem, count);
     setAlert({
       message: "Product added to cart",
       severity: "success",
     });
-    setOpenAlert(true); // Open the alert
+    setOpenAlert(true);
   };
 
   // State to open or close the review dialog

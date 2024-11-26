@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -8,15 +8,36 @@ import {
   Container,
   Button,
   useTheme,
+  CircularProgress,
 } from "@mui/material";
-import { useOrder } from "@/app/contexts/OrderContext";
 import Grid from "@mui/material/Grid2";
 import Link from "next/link";
+import axios from "axios";
 
 export default function OrdersPage() {
   const theme = useTheme();
 
-  const { orders } = useOrder();
+  // Estates
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Backend load
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:5000/api/v1/orders");
+        setOrders(response.data);
+        console.log(response.data);
+      } catch (err) {
+        setError(err.response?.data?.error || "Failed to fetch orders");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, []);
 
   return (
     <Container maxWidth="lg">
@@ -80,33 +101,56 @@ export default function OrdersPage() {
             Order History
           </Typography>
 
-          {orders.length === 0 ? (
+          {/* LOAD */}
+          {loading ? (
+            <CircularProgress />
+          ) : error ? (
+            <Typography color="error">{error}</Typography>
+          ) : orders.length === 0 ? (
             <Typography>No orders found</Typography>
           ) : (
-            orders.map((order) => (
-              <Box key={order.id} sx={{ mb: 4 }}>
-                <Typography variant="h6">Order #{order.id}</Typography>
-                <Typography variant="body2" color="textSecondary">
-                  Date: {new Date(order.date).toLocaleString()}
-                </Typography>
-                <Divider sx={{ my: 1 }} />
 
-                {order.items.map((item) => (
+            // HEAD
+            orders.map((order) => (
+              <Box key={order._id} sx={{ mb: 4 }}>
+                <Typography variant="h6">Order #{order._id}</Typography>
+                <Typography variant="body1" color="textSecondary">
+                  Customer Email: {order.customer_email}
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                  Date: {new Date(order.created_at).toLocaleString()}
+                </Typography>
+
+                <Divider sx={{ my: 2 }} />
+
+                {order.products.map((item) => (
+                  // BODY
                   <Box
                     key={item.id}
                     sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      my: 1,
+                      display: "grid",
+                      gridTemplateColumns: "2fr 1fr 1fr",
+                      alignItems: "center",
+                      gap: 2,
+                      mb: 1,
                     }}
                   >
-                    <Typography>{item.name}</Typography>
-                    <Typography>Quantity: {item.quantity}</Typography>
+                    <Typography variant="body2" sx={{ textAlign: "left" }}>{item.name}</Typography>
+                    <Typography variant="body2" sx={{ textAlign: "center" }}>
+                      Quantity: {item.quantity}
+                    </Typography>
+                    <Typography variant="body2" sx={{ textAlign: "right" }}>
+                      Price: ${item.price.toFixed(2)}
+                    </Typography>
                   </Box>
                 ))}
+                <Typography variant="body1" color="textprimary" textAlign={"right"}>
+                  Total Price: ${order.total_price.toFixed(2)}
+                </Typography>
               </Box>
             ))
           )}
+
         </Box>
       </Container>
     </Container>

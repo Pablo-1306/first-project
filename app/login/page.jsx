@@ -13,16 +13,12 @@ import {
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
-import {
-  registered_admin_users,
-  registered_users,
-} from "../constants/users/constants";
 import Alerts from "../components/alerts";
 import { useAuth } from "../contexts/SessionContext";
+import axios from "axios";
 
 export default function LoginPage() {
   const { login, setGlobalCurrentUser } = useAuth(); // We access the login function from the context
-  var userInfo;
   var pass = false;
   var isAdmin = false;
   const [showPassword, setShowPassword] = React.useState(false);
@@ -45,44 +41,36 @@ export default function LoginPage() {
     });
   };
 
-  const isAUser = () => {
+  const isUserReq = async () => {
+    try {
+      await axios.post("http://127.0.0.1:5000/api/v1/is-users", currentUser).then( response => {
+        if(response.data.status === 'success'){
+          setAlertConfig({
+            severity: response.data.status,
+            message: `Right credentials, welcome ${response.data.user_info.email}`,
+          })
+          pass = true
+          currentUser._id = response.data.user_info._id
+          currentUser.type = response.data.user_info.type
+          setGlobalCurrentUser(currentUser)
+          if(response.data.user_info.type === "admin"){
+            isAdmin = true
+          }else{
+            isAdmin = false
+          }
+        }
+      })
+    } catch (error) {
+      setAlertConfig({
+        severity: "error",
+        message: error.response.data.Error,
+      })
+    }
+  }
+
+  const isAUser = async () => {
     currentUser.email !== "" && currentUser.password !== ""
-      ? ((userInfo = registered_admin_users.find(
-          ({ email }) => email === currentUser.email,
-        )),
-        userInfo !== undefined
-          ? currentUser.password === userInfo.password
-            ? (setAlertConfig({
-                severity: "success",
-                message: `Right credentials, welcome ${currentUser.email}`,
-              }),
-              (pass = true),
-              (isAdmin = true),
-              setGlobalCurrentUser(currentUser))
-            : setAlertConfig({
-                severity: "error",
-                message: "Please verify the data entered (email and password).",
-              })
-          : ((userInfo = registered_users.find(
-              ({ email }) => email === currentUser.email,
-            )),
-            userInfo !== undefined
-              ? currentUser.password === userInfo.password
-                ? (setAlertConfig({
-                    severity: "success",
-                    message: `Welcome ${currentUser.email}`,
-                  }),
-                  (pass = true),
-                  setGlobalCurrentUser(currentUser))
-                : setAlertConfig({
-                    severity: "error",
-                    message:
-                      "Please verify the data entered (email and password).",
-                  })
-              : setAlertConfig({
-                  severity: "error",
-                  message: "No user with the entered data was found.",
-                })))
+      ? await isUserReq()
       : setAlertConfig({
           severity: "error",
           message: "Please fill in the required fields",

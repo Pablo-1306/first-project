@@ -26,8 +26,9 @@ export default function OrdersPage() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get("/api/v1/orders"); // Ajusta la URL según tu backend
-        setOrders(response.data); // Supongamos que el backend devuelve un array de órdenes
+        const response = await axios.get("http://127.0.0.1:5000/api/v1/orders");
+        setOrders(response.data);
+        console.log(response.data);
       } catch (err) {
         setError(err.response?.data?.error || "Failed to fetch orders");
       } finally {
@@ -100,6 +101,7 @@ export default function OrdersPage() {
             Order History
           </Typography>
 
+          {/* LOAD */}
           {loading ? (
             <CircularProgress />
           ) : error ? (
@@ -107,27 +109,44 @@ export default function OrdersPage() {
           ) : orders.length === 0 ? (
             <Typography>No orders found</Typography>
           ) : (
+
+            // HEAD
             orders.map((order) => (
-              <Box key={order.order_id} sx={{ mb: 4 }}>
-                <Typography variant="h6">Order #{order.order_id}</Typography>
+              <Box key={order._id} sx={{ mb: 4 }}>
+                <Typography variant="h6">Order #{order._id}</Typography>
+                <Typography variant="body1" color="textSecondary">
+                  Customer Email: {order.customer_email}
+                </Typography>
                 <Typography variant="body2" color="textSecondary">
                   Date: {new Date(order.created_at).toLocaleString()}
                 </Typography>
-                <Divider sx={{ my: 1 }} />
+
+                <Divider sx={{ my: 2 }} />
 
                 {order.products.map((item) => (
+                  // BODY
                   <Box
                     key={item.id}
                     sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      my: 1,
+                      display: "grid",
+                      gridTemplateColumns: "2fr 1fr 1fr",
+                      alignItems: "center",
+                      gap: 2,
+                      mb: 1,
                     }}
                   >
-                    <Typography>{item.name}</Typography>
-                    <Typography>Quantity: {item.quantity}</Typography>
+                    <Typography variant="body2" sx={{ textAlign: "left" }}>{item.name}</Typography>
+                    <Typography variant="body2" sx={{ textAlign: "center" }}>
+                      Quantity: {item.quantity}
+                    </Typography>
+                    <Typography variant="body2" sx={{ textAlign: "right" }}>
+                      Price: ${item.price.toFixed(2)}
+                    </Typography>
                   </Box>
                 ))}
+                <Typography variant="body1" color="textprimary" textAlign={"right"}>
+                  Total Price: ${order.total_price.toFixed(2)}
+                </Typography>
               </Box>
             ))
           )}

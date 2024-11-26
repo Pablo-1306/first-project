@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -8,15 +8,35 @@ import {
   Container,
   Button,
   useTheme,
+  CircularProgress,
 } from "@mui/material";
-import { useOrder } from "@/app/contexts/OrderContext";
 import Grid from "@mui/material/Grid2";
 import Link from "next/link";
+import axios from "axios";
 
 export default function OrdersPage() {
   const theme = useTheme();
 
-  const { orders } = useOrder();
+  // Estates
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Backend load
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get("/api/v1/orders"); // Ajusta la URL según tu backend
+        setOrders(response.data); // Supongamos que el backend devuelve un array de órdenes
+      } catch (err) {
+        setError(err.response?.data?.error || "Failed to fetch orders");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, []);
 
   return (
     <Container maxWidth="lg">
@@ -80,18 +100,22 @@ export default function OrdersPage() {
             Order History
           </Typography>
 
-          {orders.length === 0 ? (
+          {loading ? (
+            <CircularProgress />
+          ) : error ? (
+            <Typography color="error">{error}</Typography>
+          ) : orders.length === 0 ? (
             <Typography>No orders found</Typography>
           ) : (
             orders.map((order) => (
-              <Box key={order.id} sx={{ mb: 4 }}>
-                <Typography variant="h6">Order #{order.id}</Typography>
+              <Box key={order.order_id} sx={{ mb: 4 }}>
+                <Typography variant="h6">Order #{order.order_id}</Typography>
                 <Typography variant="body2" color="textSecondary">
-                  Date: {new Date(order.date).toLocaleString()}
+                  Date: {new Date(order.created_at).toLocaleString()}
                 </Typography>
                 <Divider sx={{ my: 1 }} />
 
-                {order.items.map((item) => (
+                {order.products.map((item) => (
                   <Box
                     key={item.id}
                     sx={{
@@ -107,6 +131,7 @@ export default function OrdersPage() {
               </Box>
             ))
           )}
+
         </Box>
       </Container>
     </Container>

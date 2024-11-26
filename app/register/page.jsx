@@ -15,15 +15,11 @@ import { useAuth } from "../contexts/SessionContext";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Alerts from "../components/alerts";
-import {
-  registered_admin_users,
-  registered_users,
-} from "../constants/users/constants";
+import axios from "axios";
 
 export default function CreateAccount() {
-  const { users, login, setGlobalCurrentUser } = useAuth(); // Accedemos a la función login del contexto
+  const { login, setGlobalCurrentUser } = useAuth(); // Accedemos a la función login del contexto
   var pass = false;
-  var userInfo;
   const [newUser, setNewUser] = React.useState({
     email: "",
     password: "",
@@ -46,38 +42,38 @@ export default function CreateAccount() {
     });
   };
 
-  const isAUser = () => {
+  const createUserReq = async () => {
+    try {
+      newUser.type = "client"
+      await axios.post("http://127.0.0.1:5000/api/v1/users", newUser).then( response => {
+        if(response.data.status === "success"){
+          setAlertConfig({
+            severity: response.data.status,
+            message: "Succesfully registered user",
+          })
+          pass = true
+          setGlobalCurrentUser(response.data.New_user_created)
+        }
+      })
+    } catch (error) {
+      setAlertConfig({
+        severity: "error",
+        message: error.response.data.Error,
+      })
+    }
+  }
+
+  const isAUser = async () => {
     newUser.email !== "" &&
     newUser.password !== "" &&
     newUser.confirmPassword !== ""
-      ? ((userInfo = registered_admin_users.find(
-          ({ email }) => email === newUser.email,
-        )),
-        userInfo !== undefined
-          ? setAlertConfig({
-              severity: "error",
-              message: "The e-mail entered is already registered",
-            })
-          : ((userInfo = registered_users.find(
-              ({ email }) => email === newUser.email,
-            )),
-            userInfo !== undefined
-              ? setAlertConfig({
-                  severity: "error",
-                  message: "The e-mail entered is already registered",
-                })
-              : newUser.password === newUser.confirmPassword
-                ? (users.push(newUser),
-                  setGlobalCurrentUser(newUser),
-                  setAlertConfig({
-                    severity: "success",
-                    message: "Succesfully registered user",
-                  }),
-                  (pass = true))
-                : setAlertConfig({
-                    severity: "error",
-                    message: "Passwords entered do not match",
-                  })))
+      ? (
+        newUser.password === newUser.confirmPassword ?
+          await createUserReq()
+        : setAlertConfig({
+          severity: "error",
+          message: "Passwords entered do not match",
+        }))
       : setAlertConfig({
           severity: "error",
           message: "Please fill in the required fields",

@@ -16,19 +16,15 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
 import Alerts from "../components/alerts";
 import { useAuth } from "../contexts/SessionContext";
+import axios from "axios";
 
 export default function LoginPage() {
   const theme = useTheme();
 
   const {
     currentUser,
-    users,
-    setUsers,
     setGlobalCurrentUser,
     logout,
-    adminUsers,
-    setAdminUsers,
-    removeUser,
   } = useAuth(); // Accedemos a la función login del contexto
   var edited = false;
   const [showPassword, setShowPassword] = React.useState(false);
@@ -50,29 +46,48 @@ export default function LoginPage() {
     });
   };
 
-  // Function to edit the user
-  const editUser = () => {
+  const editUserReq = async () => {
     try {
-      setUsers(
-        users.map((user) =>
-          user.email === currentUser.email
-            ? (editedUser, (edited = true))
-            : user,
-        ),
-      );
-      if (!edited) {
-        setAdminUsers(
-          adminUsers.map((adminUser) =>
-            adminUser.email === currentUser.email
-              ? (editedUser, (edited = true))
-              : adminUser,
-          ),
-        );
-      }
+      editedUser.type = currentUser.type
+      await axios.put(`http://127.0.0.1:5000/api/v1/users/${currentUser._id}`, editedUser).then( response => {
+        if(response.data.status === "success"){
+          setAlertConfig({
+            severity: response.data.status,
+            message: "Profile edited succesfully",
+          })
+          edited = true
+        }
+      })
+    } catch (error) {
       setAlertConfig({
-        severity: "success",
-        message: "Profile edited",
-      });
+        severity: "error",
+        message: error.response.data.Error,
+      })
+    }
+  }
+
+  const deleteUserReq = async () => {
+    try {
+      await axios.delete(`http://127.0.0.1:5000/api/v1/users/${currentUser._id}`).then( response => {
+        if(response.data.status === "success"){
+          setAlertConfig({
+            severity: response.data.status,
+            message: "Account deleted successfully",
+          })
+        }
+      })
+    } catch (error) {
+      setAlertConfig({
+        severity: "error",
+        message: error.response.data.Error,
+      })
+    }
+  }
+
+  // Function to edit the user
+  const editUser = async () => {
+    try {
+      await editUserReq()
 
       setOpen(edited);
       if (edited) setGlobalCurrentUser(editedUser);
@@ -82,13 +97,10 @@ export default function LoginPage() {
   };
 
   // Function to delete the user
-  const deleteUser = () => {
+  const deleteUser = async () => {
     try {
-      removeUser(currentUser);
-      setAlertConfig({
-        message: "Account deleted successfully",
-        severity: "success",
-      });
+      await deleteUserReq();
+      
       setOpen(true);
       logout();
     } catch (error) {

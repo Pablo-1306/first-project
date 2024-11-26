@@ -43,7 +43,7 @@ export default function LoginPage() {
 
   const isUserReq = async () => {
     try {
-      await axios.post("http://127.0.0.1:5000/api/v1/is-users", currentUser).then( response => {
+      await axios.post("http://localhost:8005/api/v1/is-users", currentUser).then( response => {
         if(response.data.status === 'success'){
           setAlertConfig({
             severity: response.data.status,

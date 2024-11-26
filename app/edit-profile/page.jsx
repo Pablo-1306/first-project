@@ -49,7 +49,7 @@ export default function LoginPage() {
   const editUserReq = async () => {
     try {
       editedUser.type = currentUser.type
-      await axios.put(`http://127.0.0.1:5000/api/v1/users/${currentUser._id}`, editedUser).then( response => {
+      await axios.put(`http://localhost:8005/api/v1/users/${currentUser._id}`, editedUser).then( response => {
         if(response.data.status === "success"){
           setAlertConfig({
             severity: response.data.status,
@@ -68,7 +68,7 @@ export default function LoginPage() {
 
   const deleteUserReq = async () => {
     try {
-      await axios.delete(`http://127.0.0.1:5000/api/v1/users/${currentUser._id}`).then( response => {
+      await axios.delete(`http://localhost:8005/api/v1/users/${currentUser._id}`).then( response => {
         if(response.data.status === "success"){
           setAlertConfig({
             severity: response.data.status,

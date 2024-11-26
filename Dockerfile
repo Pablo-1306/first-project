@@ -1,4 +1,4 @@
-FROM node:22.8.0-alpine3.20
+FROM node:22.8.0-alpine3.20 
 
 RUN addgroup -g 1001 atemporal && adduser -D -u 1001 -G atemporal atemporal
 

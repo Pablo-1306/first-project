@@ -1,8 +1,8 @@
 "use client";
 
-import { initialProducts } from "../constants/products/constants";
+const { useState, useContext, createContext, useEffect } = require("react");
 
-const { useState, useContext, createContext } = require("react");
+import axios from "axios";
 
 // Create a context to create the CRUD operations for the products
 const ProductContext = createContext();
@@ -10,7 +10,21 @@ const ProductContext = createContext();
 // Create a provider to wrap the application and give access to the products and the CRUD operations
 export const ProductProvider = ({ children }) => {
   // Create a state to store the products
-  const [products, setProducts] = useState(initialProducts);
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get("http://localhost:8001/api/v1/products");
+      setProducts(response.data);
+    }
+    catch (error) {
+      console.log("Error fetching products:", error);
+    }
+  }
 
   // Create operation
   const addProduct = (product) => setProducts([...products, product]);
@@ -18,12 +32,12 @@ export const ProductProvider = ({ children }) => {
   // Update operation
   const editProduct = (updatedProduct) =>
     setProducts(
-      products.map((r) => (r.id === updatedProduct.id ? updatedProduct : r)),
+      products.map((r) => (r._id === updatedProduct._id ? updatedProduct : r)),
     );
 
   // Delete operation
-  const deleteProduct = (id) =>
-    setProducts(products.filter((product) => product.id !== id));
+  const deleteProduct = (_id) =>
+    setProducts(products.filter((product) => product._id !== _id));
 
   return (
     <ProductContext.Provider

@@ -6,6 +6,7 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
+import axios from "axios";
 
 export default function CategoryDialog({
   open,
@@ -33,8 +34,8 @@ export default function CategoryDialog({
   };
 
   // Function to save category
-  const saveCategory = () => {
-    if (!category.label) {
+  const saveCategory = async () => {
+    if (!category.name) {
       setAlert({
         message: "Please enter a name for the category",
         severity: "error",
@@ -44,11 +45,30 @@ export default function CategoryDialog({
 
     // If editMode is true, update the category
     if (editMode) {
-      editCategory(category);
+      try{
+        const response = await axios.put(`http://localhost:8003/api/v1/categories/${category._id}`, category);
+        editCategory(category);
+      }
+      catch (error){
+        setAlert({
+          message: "Failed to update category",
+          severity: "error",
+        });
+      }
     } else {
       // If editMode is false, add a new category
-      category.id = categories.length + 1;
-      addCategory(category);
+      try{
+        const response = await axios.post('http://localhost:8003/api/v1/categories', category);
+        response.data._id = categories.length + 1;
+        addCategory(category);
+      }
+      catch (error){
+        console.error('Error adding category: ', error);
+        setAlert({
+          message: "Failed to add category",
+          severity: "error",
+        });
+      }
     }
 
     setAlert({
@@ -68,11 +88,11 @@ export default function CategoryDialog({
         <TextField
           autoFocus
           margin="dense"
-          name="label"
+          name="name"
           label="Category Name"
           type="text"
           fullWidth
-          value={category.label}
+          value={category.name}
           onChange={handleChange}
           sx={{ mb: 2 }}
         />

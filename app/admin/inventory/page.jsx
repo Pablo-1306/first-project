@@ -20,6 +20,7 @@ import { useProducts } from "@/app/contexts/ProductContext";
 import Link from "next/link";
 import ProductDialog from "@/app/components/dialog-product";
 import Alerts from "@/app/components/alerts";
+import axios from "axios";
 
 export default function Stock() {
   const theme = useTheme();
@@ -27,7 +28,7 @@ export default function Stock() {
   const { products, addProduct, editProduct, deleteProduct } = useProducts();
 
   const columns = [
-    { field: "id", headerName: "ID", width: 30 },
+    { field: "_id", headerName: "ID", width: 30 },
     { field: "name", headerName: "PRODUCT", flex: 1 },
     { field: "price", headerName: "PRICE", flex: 1 },
     { field: "category", headerName: "CATEGORIES", flex: 2 },
@@ -45,7 +46,7 @@ export default function Stock() {
             <EditIcon />
           </IconButton>
           <IconButton
-            onClick={() => handleDeleteProduct({ id: params.row.id })}
+            onClick={() => handleDeleteProduct({ _id: params.row._id })}
           >
             <DeleteIcon />
           </IconButton>
@@ -57,7 +58,7 @@ export default function Stock() {
   const [action, setAction] = useState("");
 
   const [product, setProduct] = useState({
-    id: "",
+    _id: "",
     name: "",
     price: "",
     image: "/shirt-test.jpeg",
@@ -75,26 +76,36 @@ export default function Stock() {
 
   const handleProduct = ({ action, product }) => {
     setAction(action);
-    setOpenDialog(true);
     if (action === "add") {
       setProduct({
-        id: "",
+        _id: "",
         name: "",
         price: "",
         image: "/shirt-test.jpeg",
       });
     } else if (action === "edit") {
       setProduct(product);
-      editProduct(product);
     }
+    setOpenDialog(true);
   };
 
-  const handleDeleteProduct = ({ id }) => {
-    deleteProduct(id);
-    setAlert({
-      message: "Product deleted successfully",
-      severity: "success",
-    });
+  const handleDeleteProduct = async ({ _id }) => {
+    try {
+      const response = await axios.delete(`http://localhost:8001/api/v1/products/${_id}`)
+      deleteProduct(response.data._id);
+      setAlert({
+        message: "Product deleted successfully",
+        severity: "success",
+      });
+    }
+    catch (error) {
+      console.error("Error deleting product: ", error);
+      setAlert({
+        message: "Failed to delete product",
+        severity: "error",
+      });
+    }
+    setOpenAlert(true);
   };
 
   return (
@@ -171,6 +182,7 @@ export default function Stock() {
         <DataGrid
           columns={columns}
           rows={products}
+          getRowId={(row) => row._id}
           initialState={{
             pagination: {
               paginationModel: { page: 0, pageSize: 5 },

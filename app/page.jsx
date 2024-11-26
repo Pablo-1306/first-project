@@ -4,27 +4,20 @@ import {
   Box,
   Container,
   Divider,
-  Paper,
   Typography,
   useTheme,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { initialProducts } from "./constants/products/constants";
-import { useCategories } from "./contexts/category-context";
+import { useCategories } from "./contexts/CategoryContext";
 import { useProducts } from "./contexts/ProductContext";
 
 export default function Home() {
   const theme = useTheme();
 
-  const { categories } = useCategories();
-  //Delete in the future when added context for categories:
-  //const [categories, setCategories] = useState(initialCategories);
-
-  //Delete in the future when added context for products:
-  //const [products, setProducts] = useState(initialProducts);
+  // Import categories from context CategoryContext
+  const { categories, setCategories } = useCategories();
 
   // Import products from context ProductsContext
   const { products } = useProducts();
@@ -64,18 +57,18 @@ export default function Home() {
           {categories.map((category) => (
             <Grid
               size={{ xs: 12, sm: 2 }}
-              key={category.label}
+              key={category.name}
               sx={{
                 mb: { xs: 3, sm: 0 },
               }}
             >
               <Typography
                 component={Link}
-                href={`/categories/${category.label}`}
+                href={`/categories/${category.name}`}
                 color={theme.palette.text.dark}
                 sx={{ textDecoration: "underline" }}
               >
-                {category.label}
+                {category.name}
               </Typography>
             </Grid>
           ))}
@@ -90,7 +83,7 @@ export default function Home() {
           {products.map((product) => (
             <Grid
               size={{ xs: 12, md: 6, lg: 3 }}
-              key={product.id}
+              key={product._id}
               sx={{
                 display: "flex",
                 flexDirection: "column",
@@ -104,7 +97,7 @@ export default function Home() {
                   width: 240,
                 }}
               >
-                <Box component={Link} href={`/products/${product.id}`}>
+                <Box component={Link} href={`/products/${product._id}`}>
                   <Image src={product.image} width="240" height="320" />
                 </Box>
                 <Typography variant="subtitle2" color={theme.palette.text.dark}>

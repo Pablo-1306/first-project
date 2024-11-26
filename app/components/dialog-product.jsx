@@ -8,6 +8,7 @@ import {
   TextField,
 } from "@mui/material";
 import { theme } from "../styles/global-theme";
+import axios from "axios";
 
 export default function ProductDialog({
   open,
@@ -21,6 +22,7 @@ export default function ProductDialog({
   setOpenAlert,
   action,
 }) {
+
   // Function to close the dialog
   const handleCloseDialog = () => {
     setOpen(false);
@@ -35,25 +37,44 @@ export default function ProductDialog({
   };
 
   // Function to save the product
-  const saveReview = () => {
+  const saveProduct = async () => {
     if (action === "add") {
-      product.id = String(products.length + 1);
-      product.image = "/shirt-test.jpeg";
-      addProduct(product); // Add the product to the list of products
-      setAlert({
-        message: "Product added successfully",
-        severity: "success",
-      });
-      console.log(product);
-      setOpenAlert(true); // Open the alert
+      try{
+        const response = await axios.post("http://localhost:8001/api/v1/products", product);
+        response.data._id = products.length + 1;
+        addProduct(response.data); // Add the product to the list of products
+        setAlert({
+          message: "Product added successfully",
+          severity: "success",
+        });
+      }
+      catch (error){
+        console.error("Error adding product: ", error);
+        setAlert({
+          message: "Failed to add product",
+          severity: "error",
+        });
+      }
     } else if (action === "edit") {
-      editProduct(product);
-      setAlert({
-        message: "Product updated successfully",
-        severity: "success",
-      });
-      setOpenAlert(true); // Open the alert
+      try {
+        const response = await axios.put(`http://localhost:8001/api/v1/products/${product._id}`, product);
+        response.data._id = product._id;
+        response.data.image = product.image;
+        editProduct(response.data); // Edit the product in the list of products
+        setAlert({
+          message: "Product updated successfully",
+          severity: "success",
+        });
+      }
+      catch (error) {
+        console.error("Error updating product: ", error);
+        setAlert({
+          message: "Failed to update product",
+          severity: "error",
+        });
+      }
     }
+    setOpenAlert(true); // Open the alert
     handleCloseDialog(); // Close the dialog
   };
 
@@ -96,7 +117,7 @@ export default function ProductDialog({
           Cancel
         </Button>
         <Button
-          onClick={saveReview}
+          onClick={saveProduct}
           color="primary"
           sx={{ bgcolor: theme.palette.secondary.main }}
         >

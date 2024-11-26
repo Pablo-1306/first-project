@@ -2,11 +2,15 @@
 
 import { Box, Container, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import { initialProducts } from "../constants/products/constants";
 import Image from "next/image";
+import { useProducts } from "../contexts/ProductContext";
 
 export default function CategoryProducts({ categoryId }) {
-  const products = initialProducts.filter(
+
+  // Import products from context ProductsContext
+  const { products } = useProducts();
+  
+  const productsCat = products.filter(
     (product) => product.category === categoryId,
   );
 
@@ -17,7 +21,7 @@ export default function CategoryProducts({ categoryId }) {
       </Typography>
 
       <Grid container spacing={3}>
-        {products.map((product) => (
+        {productsCat.map((product) => (
           <Grid size={{ xs: 12, sm: 6, md: 4 }} key={product.id}>
             <Box
               sx={{

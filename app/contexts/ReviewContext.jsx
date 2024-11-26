@@ -10,7 +10,7 @@ const ReviewContext = createContext();
 // Create a provider to wrap the application and give access to the reviews and the CRUD operations
 export const ReviewProvider = ({ children }) => {
   // Create a state to store the reviews
-  const [reviews, setReviews] = useState();
+  const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
     fetchReviews();

@@ -45,7 +45,7 @@ export default function CreateAccount() {
   const createUserReq = async () => {
     try {
       newUser.type = "client"
-      await axios.post("http://127.0.0.1:5000/api/v1/users", newUser).then( response => {
+      await axios.post("http://localhost:8005/api/v1/users", newUser).then( response => {
         if(response.data.status === "success"){
           setAlertConfig({
             severity: response.data.status,

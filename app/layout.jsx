@@ -6,7 +6,7 @@ import FooterGlobal from "./components/footer";
 import { ReviewProvider } from "./contexts/ReviewContext";
 import { CartProvider } from "./contexts/CartContext";
 import { AuthProvider } from "./contexts/SessionContext";
-import { CategoryProvider } from "./contexts/category-context";
+import { CategoryProvider } from "./contexts/CategoryContext";
 import { OrderProvider } from "./contexts/OrderContext";
 import { ProductProvider } from "./contexts/ProductContext";
 

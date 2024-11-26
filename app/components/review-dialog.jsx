@@ -8,6 +8,7 @@ import {
   TextField,
 } from "@mui/material";
 import { theme } from "../styles/global-theme";
+import axios from "axios";
 
 export default function ReviewDialog({
   open,
@@ -34,14 +35,24 @@ export default function ReviewDialog({
   };
 
   // Function to save the review
-  const saveReview = () => {
-    review.id = reviews.length + 1;
-    review.product = productId;
-    addReview(review); // Add the review to the list of reviews
-    setAlert({
-      message: "Review added successfully",
-      severity: "success",
-    });
+  const saveReview = async () => {
+    try{
+      review._id = reviews.length + 1;
+      review.product = productId;
+      const response = await axios.post("http://localhost:8000/api/v1/reviews", review);
+      addReview(review); // Add the review to the list of reviews
+      setAlert({
+        message: "Review added successfully",
+        severity: "success",
+      });
+    }
+    catch (error){
+      console.error("Error adding review: ", error);
+      setAlert({
+        message: "Failed to add review",
+        severity: "error",
+      });
+    }
     setOpenAlert(true); // Open the alert
     handleCloseDialog(); // Close the dialog
   };

@@ -20,19 +20,18 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import EditIcon from "@mui/icons-material/Edit";
 import Image from "next/image";
-import { initialProducts } from "../../constants/products/constants";
 import Alerts from "@/app/components/alerts";
 import CategoryDialog from "@/app/components/category-dialog";
-import { useCategories } from "@/app/contexts/category-context";
+import { useCategories } from "@/app/contexts/CategoryContext";
 import Link from "next/link";
 import { useProducts } from "@/app/contexts/ProductContext";
+import axios from "axios";
 
 export default function CategoriesManager() {
   const theme = useTheme();
 
   // Access to list of categories and CREATE, UPDATE and DELETE functions from the CategoryContext
-  const { categories, addCategory, editCategory, deleteCategory } =
-    useCategories();
+  const { categories, addCategory, editCategory, deleteCategory } = useCategories();
 
   // Import products from context ProductsContext
   const { products } = useProducts();
@@ -54,8 +53,8 @@ export default function CategoriesManager() {
 
   // Current category state
   const [currentCategory, setCurrentCategory] = useState({
-    id: "",
-    label: "",
+    _id: "",
+    name: "",
   });
 
   // Handlers for category dialog
@@ -65,8 +64,8 @@ export default function CategoriesManager() {
       setCurrentCategory(category);
     } else {
       setCurrentCategory({
-        id: String(Date.now()),
-        label: "",
+        _id: categories.length + 1,
+        name: "",
       });
     }
     setOpenCategoryDialog(true);
@@ -76,19 +75,29 @@ export default function CategoriesManager() {
   const handleCloseCategoryDialog = () => {
     setOpenCategoryDialog(false);
     setCurrentCategory({
-      id: "",
-      label: "",
+      _id: "",
+      name: "",
     });
   };
 
   // Function to delete a category
   const handleDeleteCategory = (categoryId) => {
-    deleteCategory(categoryId);
-
-    setAlert({
-      message: "Category deleted successfully",
-      severity: "success",
-    });
+    try {
+      const response = axios.delete(`http://localhost:8003/api/v1/categories/${categoryId}`);
+      deleteCategory(categoryId);
+      setAlert({
+        message: "Category deleted successfully",
+        severity: "success",
+      });
+    }
+    catch (error) {
+      console.error("Error deleting category: ", error);
+      setAlert({
+        message: "Failed to delete category",
+        severity: "error",
+      });
+    }
+    setOpenAlert(true);
   };
 
   // Function to give the price input a format
@@ -101,9 +110,7 @@ export default function CategoriesManager() {
 
   // Function to filter products by category
   const getProductsByCategory = (categoryLabel) => {
-    console.log(
-      products.filter((product) => product.category === categoryLabel),
-    );
+    console.info(products.filter((product) => product.category === categoryLabel));
     return products.filter((product) => product.category === categoryLabel);
   };
 
@@ -174,7 +181,7 @@ export default function CategoriesManager() {
         </Button>
 
         {categories.map((category) => (
-          <Accordion key={category.id} sx={{ mb: 2, mt: 6 }}>
+          <Accordion key={category._id} sx={{ mb: 2, mt: 6 }}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               sx={{ bgcolor: theme.palette.grey[100] }}
@@ -182,8 +189,8 @@ export default function CategoriesManager() {
               <Grid container sx={{ width: "100%" }}>
                 <Grid size={{ xs: 6 }} textAlign="left">
                   <Typography variant="h6">
-                    {category.label} (
-                    {getProductsByCategory(category.label).length} Products)
+                    {category.name} (
+                    {getProductsByCategory(category.name).length} Products)
                   </Typography>
                 </Grid>
                 <Grid size={{ xs: 6 }} textAlign="right">
@@ -206,7 +213,7 @@ export default function CategoriesManager() {
                       startIcon={<DeleteOutlinedIcon />}
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleDeleteCategory(category.id);
+                        handleDeleteCategory(category._id);
                       }}
                       size="small"
                       sx={{ mr: 4 }}
@@ -219,9 +226,9 @@ export default function CategoriesManager() {
             </AccordionSummary>
             <AccordionDetails>
               <List>
-                {getProductsByCategory(category.label).map((product) => (
+                {getProductsByCategory(category.name).map((product) => (
                   <ListItem
-                    key={product.id}
+                    key={product._id}
                     sx={{
                       border: "1px solid #ddd",
                       borderRadius: 1,

@@ -7,6 +7,7 @@ import {
   TextField,
   Box,
 } from "@mui/material";
+import axios from "axios";
 
 export default function CardDialog({
   open,
@@ -30,22 +31,42 @@ export default function CardDialog({
     });
   };
 
-  const saveCard = () => {
+  const saveCard = async () => {
     if (action == "add") {
-      card.id = cardList.length + 1;
-      setCardList([...cardList, card]);
-      setAlert({
-        message: "Card added successfully",
-        severity: "success",
-      });
+      try {
+        const response = await axios.post("http://localhost:8004/api/v1/payments", card);
+        response.data._id = cardList.length + 1;
+        setCardList([...cardList, response.data]);
+        setAlert({
+          message: "Card added successfully",
+          severity: "success",
+        });
+      }
+      catch (error) {
+        console.error("Error adding card: ", error);
+        setAlert({
+          message: "Failed to add card",
+          severity: "error",
+        });
+      }
     } else if (action == "edit") {
-      setCardList(
-        cardList.map((newCard) => (newCard.id === card.id ? card : newCard)),
-      );
-      setAlert({
-        message: "Card edited successfully",
-        severity: "success",
-      });
+      try {
+        const response = await axios.put(`http://localhost:8004/api/v1/payments/${card._id}`, card);
+        setCardList(
+          cardList.map((c) => (c._id === card._id ? response.data : c)),
+        );
+        setAlert({
+          message: "Card edited successfully",
+          severity: "success",
+        });
+      }
+      catch (error) {
+        console.error("Error editing card: ", error);
+        setAlert({
+          message: "Failed to edit card",
+          severity: "error",
+        });
+      }
     }
     setOpenAlert(true);
     closeDialog();
@@ -79,6 +100,15 @@ export default function CardDialog({
           type="text"
           fullWidth
           value={card.number}
+          onChange={handleChange}
+        />
+        <TextField
+          margin="dense"
+          name="cvv"
+          label="CVV"
+          type="text"
+          fullWidth
+          value={card.cvv}
           onChange={handleChange}
         />
         <Box display="flex" gap={2}>
